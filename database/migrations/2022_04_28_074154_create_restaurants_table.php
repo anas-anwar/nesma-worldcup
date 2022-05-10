@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name', 50);
             $table->integer('phone');
             $table->string('rate', 50);
-            $table->timestamps('hour_open');
-            $table->timestamps('hour_close');
+            $table->time('hour_open');
+            $table->time('hour_close');
             $table->float('lattude');
             $table->float('longtude');
             $table->string('address', 50);

@@ -23,7 +23,6 @@ return new class extends Migration
             $table->float('longtude');
             $table->string('address', 50);
             $table->string('hotelurl', 50)->nullable();
-            // $table->unsignedBigInteger('room_id');
             // $table->unsignedBigInteger('services_id');
             // $table->unsignedBigInteger('images_id');
             $table->timestamps();

@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TypeOfEvent extends Model
 {
     use HasFactory;
+
+    public function Event(){ // 1 - M relationship (One)
+        return $this->hasMany(Events::class);
+    }
 }

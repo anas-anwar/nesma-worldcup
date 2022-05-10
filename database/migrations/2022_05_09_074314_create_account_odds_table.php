@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id');
             $table->foreign('account_id')->references('id')->on('accounts');
             $table->unsignedBigInteger('vote')->nullable();
-            $table->foreign('vote')->references('id')->on('team_id')->onDelete('set null');
+            $table->foreign('vote')->references('id')->on('teams')->onDelete('set null');
             $table->timestamps();
         });
     }

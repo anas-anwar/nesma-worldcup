@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('type_of_events', function (Blueprint $table) {
             $table->id();
             $table->string('event', 50);
-            $table->varbinary('meaning', 50);
+            $table->string('meaning', 50);
         });
     }
 

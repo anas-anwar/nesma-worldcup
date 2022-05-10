@@ -5,7 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TypeOfMatch extends Model
+class Round extends Model
 {
     use HasFactory;
+
+    public function MatchRelation(){ // 1 - M relationship (One)
+        return $this->hasMany(MatchModel::class);
+    }
 }
