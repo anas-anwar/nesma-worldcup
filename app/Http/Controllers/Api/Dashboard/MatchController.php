@@ -33,8 +33,8 @@ class MatchController extends Controller
     {
         $request->validate([
             'date' => 'required|date',
-            'start' => 'required|time',
-            'end' => 'required|time',
+            'start' => 'required',
+            'end' => 'required',
             'round_id' => 'required',
             'stadium_id' => 'required',
             'localteam_id' => 'required',
@@ -95,8 +95,8 @@ class MatchController extends Controller
     {
         $request->validate([
             'date' => 'required|date',
-            'start' => 'required|time',
-            'end' => 'required|time',
+            'start' => 'required',
+            'end' => 'required',
             'round_id' => 'required',
             'stadium_id' => 'required',
             'localteam_id' => 'required',
