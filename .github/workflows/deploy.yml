@@ -24,4 +24,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.NESMA_KEY }}
-          script: "cd /var/www/nesma-worldcup && .scripts/deploy.sh"
+          script: "cd /var/www/nesma-worldcup && .scripts/deploy.sh" 
