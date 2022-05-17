@@ -37,7 +37,7 @@ class MatchController extends Controller
     }
 
     public function show($id){
-        $match = MatchModel::with('LineUp')->with('Event')->with('Rounds')->with('LocalTeams')->with('VisitorTeam')->with('Stadiums')->findOrFail($id);
+        $match = MatchModel::with('LineUp')->with('Event')->with('Rounds')->with('LocalTeam')->with('VisitorTeam')->with('Stadiums')->findOrFail($id);
         return response()->json([
             'status' => 200,
             'message' => 'Show Match' . $match->id,

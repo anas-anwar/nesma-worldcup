@@ -32,7 +32,9 @@ class MatchController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'date_time' => 'required',
+            'date' => 'required|date',
+            'start' => 'required|time',
+            'end' => 'required|time',
             'round_id' => 'required',
             'stadium_id' => 'required',
             'localteam_id' => 'required',
@@ -40,7 +42,9 @@ class MatchController extends Controller
         ]);
         
         $match = new MatchModel();
-        $match->date_time = $request['date_time'];
+        $match->date = $request['date'];
+        $match->start = $request['start'];
+        $match->end = $request['end'];
         $match->round_id = $request['round_id'];
         $match->stadium_id = $request['stadium_id'];
         $match->localteam_id = $request['localteam_id'];
@@ -90,7 +94,9 @@ class MatchController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'date_time' => 'required',
+            'date' => 'required|date',
+            'start' => 'required|time',
+            'end' => 'required|time',
             'round_id' => 'required',
             'stadium_id' => 'required',
             'localteam_id' => 'required',
@@ -99,7 +105,9 @@ class MatchController extends Controller
 
         $match = MatchModel::with('Rounds')->with('Stadiums')->with('LocalTeam')->with('VisitorTeam')->findOrFail($id);
         
-        $match->date_time = $request['date_time'];
+        $match->date = $request['date'];
+        $match->start = $request['start'];
+        $match->end = $request['end'];
         $match->round_id = $request['round_id'];
         $match->stadium_id = $request['stadium_id'];
         $match->localteam_id = $request['localteam_id'];
