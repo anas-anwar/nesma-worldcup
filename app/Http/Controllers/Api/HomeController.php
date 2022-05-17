@@ -11,6 +11,7 @@ use App\Models\MatchModel;
 use App\Models\Restaurant;
 use App\Models\Stadium;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -22,8 +23,14 @@ class HomeController extends Controller
                                 ->with('Stadiums')
                                 ->with('LocalTeam')
                                 ->with('VisitorTeam')
-                                ->where('date_time', '>', $current_time->toDateTimeString())
-                                ->orderBy('date_time', 'asc')
+                                ->where('date', '>' ,$current_time->toDateString())
+                                ->orWhere(function ($query) use ($current_time){
+                                    $query->where('date', '=' ,$current_time->toDateString());
+                                    $query->where('start', '<=' ,$current_time->toTimeString());
+                                    $query->where('end', '>=' , $current_time->toTimeString());
+                                })
+                                ->orderBy('date', 'asc')
+                                ->orderBy('start', 'asc')
                                 ->first();
 
         $top_ten_hotels  = Hotel::orderBy('rate', 'desc')
@@ -42,6 +49,7 @@ class HomeController extends Controller
                     ->take(10)
                     ->select('name', 'description', 'address')
                     ->get();
+
 
         return response()->json([
             'status' => 200,
