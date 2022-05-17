@@ -10,11 +10,11 @@ class Restaurant extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function Services(){ // 1 - M relationship (Many)
-        return $this->belongsTo(Service::class, 'services_id');
+    public function Services(){ // Eloquent Polymorphic Relations
+        return $this->morphMany(Service::class, 'model');
     }
     
     public function Images(){ // 1 - M relationship (Many) with Eloquent Polymorphic Relations
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphMany(Image::class, 'model');
     }
 }

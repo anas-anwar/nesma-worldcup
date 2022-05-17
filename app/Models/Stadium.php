@@ -10,8 +10,8 @@ class Stadium extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'stadiums';
     
-    public function Images(){ // 1 - M relationship (Many) with Eloquent Polymorphic Relations
-        return $this->morphMany(Image::class, 'imageable');
+    public function Images(){ //Eloquent Polymorphic Relations
+        return $this->morphMany(Image::class, 'model');
     }
 
     public function MatchRelation(){ // 1 - M relationship (One)

@@ -10,11 +10,19 @@ class StadiumController extends Controller
 {
     public function index(){
         $stadiums  = Stadium::with('Images')->get();
-        return response()->json($stadiums);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Show Stadiums',
+            'data' => $stadiums,
+        ]);
     }
     public function show($id){
         $stadium  = Stadium::with('Images')->findOrFail($id);
-        return response()->json($stadium);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Show Stadium ' . $stadium->id,
+            'data' => $stadium,
+        ]);
     }
 }
 

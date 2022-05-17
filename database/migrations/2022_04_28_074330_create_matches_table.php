@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('matches', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->time('start');
+            $table->time('end');
             // $table->unsignedBigInteger('round_id');
             // $table->unsignedBigInteger('stadium_id');
             // $table->unsignedBigInteger('localteam_id');

@@ -15,14 +15,13 @@ return new class extends Migration
     {
         Schema::create('stadiums', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
-            $table->string('description', 50);
-            $table->integer('phone');
+            $table->string('name');
+            $table->string('description');
+            $table->string('phone');
             $table->integer('capacity');
-            $table->string('address', 50);
+            $table->string('address');
             $table->float('longtude');
             $table->float('lattude');
-            // $table->unsignedBigInteger('images_id');
             $table->timestamps();
             $table->softDeletes();
         });

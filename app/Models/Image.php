@@ -9,7 +9,7 @@ class Image extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function imageable()
+    public function model() // Eloquent Polymorphic Relations
     {
         return $this->morphTo();
     }

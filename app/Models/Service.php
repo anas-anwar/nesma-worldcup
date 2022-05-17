@@ -10,11 +10,8 @@ class Service extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function Hotel(){ // 1 - M relationship (One)
-        return $this->hasMany(Hotel::class);
-    }
-
-    public function Restursnt(){ // 1 - M relationship (One)
-        return $this->hasMany(Restursnt::class);
+    public function model() // Eloquent Polymorphic Relations
+    {
+        return $this->morphTo();
     }
 }

@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('account_odds', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
-            $table->unsignedBigInteger('match_id');
-            $table->foreign('match_id')->references('id')->on('matches');
-            $table->unsignedBigInteger('account_id');
-            $table->foreign('account_id')->references('id')->on('accounts');
+            $table->string('name');
+            $table->unsignedBigInteger('match_id')->nullable();
+            $table->foreign('match_id')->references('id')->on('matches')->cascadeOnDelete();
+            $table->unsignedBigInteger('account_id')->nullable();
+            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->unsignedBigInteger('vote')->nullable();
-            $table->foreign('vote')->references('id')->on('teams')->onDelete('set null');
+            $table->foreign('vote')->references('id')->on('teams')->onDelete('set null')->cascadeOnDelete();
             $table->timestamps();
         });
     }

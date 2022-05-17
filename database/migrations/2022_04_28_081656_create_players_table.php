@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->id();
             // $table->unsignedBigInteger('team_id');
-            $table->string('name', 50);
+            $table->string('name');
             $table->string('nationality');
             $table->date('birthdate');
             $table->integer('height');

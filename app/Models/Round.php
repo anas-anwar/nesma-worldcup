@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
 {
+    public $timestamps = false;
     use HasFactory;
 
     public function MatchRelation(){ // 1 - M relationship (One)

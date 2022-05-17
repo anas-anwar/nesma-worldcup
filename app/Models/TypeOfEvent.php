@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TypeOfEvent extends Model
 {
+    public $timestamps = false;
     use HasFactory;
 
     public function Event(){ // 1 - M relationship (One)

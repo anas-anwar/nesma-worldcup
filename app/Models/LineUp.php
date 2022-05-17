@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LineUp extends Model
 {
+    public $timestamps = false;
     use HasFactory;
 
     public function Matches(){ // 1 - M relationship (Many)

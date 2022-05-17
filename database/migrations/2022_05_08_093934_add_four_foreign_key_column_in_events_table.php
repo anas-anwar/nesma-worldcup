@@ -14,14 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->unsignedBigInteger('match_id');
-            $table->foreign('match_id')->references('id')->on('matches');
-            $table->unsignedBigInteger('team_id');
-            $table->foreign('team_id')->references('id')->on('teams');
-            $table->unsignedBigInteger('player_id');
-            $table->foreign('player_id')->references('id')->on('players');
-            $table->unsignedBigInteger('type_of_events_id');
-            $table->foreign('type_of_events_id')->references('id')->on('type_of_events');
+            $table->unsignedBigInteger('match_id')->nullable();
+            $table->foreign('match_id')->references('id')->on('matches')->cascadeOnDelete();
+            $table->unsignedBigInteger('team_id')->nullable();
+            $table->foreign('team_id')->references('id')->on('teams')->cascadeOnDelete();
+            $table->unsignedBigInteger('player_id')->nullable();
+            $table->foreign('player_id')->references('id')->on('players')->cascadeOnDelete();
+            $table->unsignedBigInteger('type_of_events_id')->nullable();
+            $table->foreign('type_of_events_id')->references('id')->on('type_of_events')->cascadeOnDelete();
         });
     }
 

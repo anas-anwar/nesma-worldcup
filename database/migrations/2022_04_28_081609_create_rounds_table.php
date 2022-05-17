@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('stadiums', function (Blueprint $table) {
-            $table->unsignedBigInteger('images_id');
-            $table->foreign('images_id')->references('id')->on('images');
+        Schema::create('rounds', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
         });
     }
 
@@ -26,9 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('stadiums', function (Blueprint $table) {
-            $table->dropColumn('images_id');
-            
-        });
+        Schema::dropIfExists('rounds');
     }
 };
