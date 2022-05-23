@@ -18,7 +18,7 @@ class TeamController extends Controller
     {
         $teams = Team::with('LineUp')->with('Event')->with('Stadium')->with('Groups')->get();
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Teams',
             'data' => $teams,
         ]);
@@ -35,7 +35,7 @@ class TeamController extends Controller
         $request->validate([
             'name' => 'required|string',
             'logo' => 'required',
-            'shirtcolor' => 'required',
+            'shirt_color' => 'required',
             'stadium_id' => 'required',
             'group_id' => 'required',
         ]);
@@ -51,7 +51,7 @@ class TeamController extends Controller
         $team = new Team();
         $team->name = $request['name'];
         $team->logo = $path.$name;
-        $team->shirtcolor = $request['shirtcolor'];
+        $team->shirt_color = $request['shirt_color'];
         $team->stadium_id = $request['stadium_id'];
         $team->group_id = $request['group_id'];
         $result = $team->save();
@@ -83,7 +83,7 @@ class TeamController extends Controller
     {
         $team = Team::with('LineUp')->with('Event')->with('Stadium')->with('Groups')->findOrFail($id);
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Team ' . $team->id,
             'data' => $team,
         ]);
@@ -101,7 +101,7 @@ class TeamController extends Controller
         $request->validate([
             'name' => 'required|string',
             'logo' => 'required',
-            'shirtcolor' => 'required',
+            'shirt_color' => 'required',
             'stadium_id' => 'required',
             'group_id' => 'required',
         ]);
@@ -118,7 +118,7 @@ class TeamController extends Controller
 
         $team->name = $request['name'];
         $team->logo = $path.$name;
-        $team->shirtcolor = $request['shirtcolor'];
+        $team->shirt_color = $request['shirt_color'];
         $team->stadium_id = $request['stadium_id'];
         $team->group_id = $request['group_id'];
         $result = $team->save();

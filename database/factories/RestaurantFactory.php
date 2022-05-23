@@ -28,6 +28,7 @@ class RestaurantFactory extends Factory
         $hour_open = Carbon::create($this->faker->time()) ;
 
         $hour_close= Carbon::create($hour_open)->addHours(12); 
+        $services = ['coffee', 'Wifi', 'delevery'];
 
         return [
             'name' => $this->faker->name(),
@@ -35,9 +36,10 @@ class RestaurantFactory extends Factory
             'rate' => rand(0,10),
             'hour_open' => $hour_open,
             'hour_close' => $hour_close,
-            'lattude' => $this->faker->latitude($min = -90, $max = 90),
+            'latitude' => $this->faker->latitude($min = -90, $max = 90),
             'longtude' => $this->faker->longitude($min = -180, $max = 180),
             'address' => $this->faker->address(),
+            'services' => $services[rand(0,2)],
         ];
     }
 }

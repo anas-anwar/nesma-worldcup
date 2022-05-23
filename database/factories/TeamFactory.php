@@ -26,7 +26,8 @@ class TeamFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'logo' => $this->faker->text(),
-            'shirtcolor' => $this->faker->colorName(),
+            'flag_url' => $this->faker->text(),
+            'shirt_color' => $this->faker->colorName(),
             'stadium_id' => rand(1,10),
             'group_id' => rand(1,10),
         ];

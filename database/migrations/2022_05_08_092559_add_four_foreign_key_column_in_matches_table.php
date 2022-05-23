@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('matches', function (Blueprint $table) {
-            $table->unsignedBigInteger('round_id')->nullable();
+            $table->unsignedBigInteger('round_id');
             $table->foreign('round_id')->references('id')->on('rounds')->cascadeOnDelete();
-            $table->unsignedBigInteger('stadium_id')->nullable();
+            $table->unsignedBigInteger('stadium_id');
             $table->foreign('stadium_id')->references('id')->on('stadiums')->cascadeOnDelete();
-            $table->unsignedBigInteger('localteam_id')->nullable();
+            $table->unsignedBigInteger('localteam_id');
             $table->foreign('localteam_id')->references('id')->on('teams')->cascadeOnDelete();
-            $table->unsignedBigInteger('visitorteam_id')->nullable();
+            $table->unsignedBigInteger('visitorteam_id');
             $table->foreign('visitorteam_id')->references('id')->on('teams')->cascadeOnDelete();
 
         });

@@ -28,10 +28,10 @@ class HotelRequests extends FormRequest
             'description' => 'required|string',
             'phone' => 'required|numeric',
             'rate' => 'required|string',
-            'lattude' => 'required',
+            'latitude' => 'required',
             'longtude' => 'required',
             'address' => 'required',
-            'hotelurl' => 'string',
+            'hotel_url' => 'string',
         ];
     }
     public function messages()

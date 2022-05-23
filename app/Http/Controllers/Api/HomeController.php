@@ -38,7 +38,7 @@ class HomeController extends Controller
                     ->select('name', 'rate', 'description', 'address')
                     ->get();
 
-        $top_ten_restaurants = Restaurant::with('Services')->with('Images')
+        $top_ten_restaurants = Restaurant::with('Images')
                     ->orderBy('rate', 'desc')
                     ->take(10)
                     ->select('name', 'rate', 'hour_open', 'hour_close', 'address')
@@ -52,7 +52,7 @@ class HomeController extends Controller
 
 
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Home Page',
             'data' => [
                 'Next_match' => $Next_match,

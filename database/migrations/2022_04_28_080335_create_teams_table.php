@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('logo');
-            $table->string('shirtcolor');
+            $table->string('flag_url');
+            $table->string('shirt_color');
             // $table->unsignedBigInteger('stadium_id');
             // $table->unsignedBigInteger('group_id');
             $table->timestamps();

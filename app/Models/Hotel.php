@@ -17,8 +17,4 @@ class Hotel extends Model
     public function Images(){ // Eloquent Polymorphic Relations
         return $this->morphMany(Image::class, 'model');
     }
-
-    public function Services(){ // Eloquent Polymorphic Relations
-        return $this->morphMany(Service::class, 'model');
-    }
 }

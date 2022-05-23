@@ -20,9 +20,11 @@ return new class extends Migration
             $table->string('rate');
             $table->time('hour_open');
             $table->time('hour_close');
-            $table->float('lattude');
+            $table->string('menu_url', 255)->nullable();
+            $table->float('latitude');
             $table->float('longtude');
             $table->string('address');
+            $table->string('services');
             $table->timestamps();
             $table->softDeletes();
         });

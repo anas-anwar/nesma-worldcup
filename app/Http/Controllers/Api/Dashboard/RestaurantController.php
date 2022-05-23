@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
-use App\Models\Service;
 use Illuminate\Support\Facades\Storage;
 
 class RestaurantController extends Controller
@@ -17,9 +16,9 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $restaurants  = Restaurant::with('Services')->with('Images')->get();
+        $restaurants  = Restaurant::with('Images')->get();
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Restaurants',
             'data' => $restaurants,
         ]);
@@ -39,9 +38,10 @@ class RestaurantController extends Controller
             'rate' => 'required|max:10|min:1|numeric',
             'hour_open' => 'required',
             'hour_close' => 'required',
-            'lattude' => 'required|numeric|min:-90|max:90',
+            'latitude' => 'required|numeric|min:-90|max:90',
             'longtude' => 'required|numeric|min:-180|max:180',
             'address' => 'required|string',
+            'services' => 'required'
         ]);
 
         $restaurant = new Restaurant();
@@ -50,9 +50,10 @@ class RestaurantController extends Controller
         $restaurant->rate = $request['rate'];
         $restaurant->hour_open = $request['hour_open'];
         $restaurant->hour_close = $request['hour_close'];
-        $restaurant->lattude = $request['lattude'];
+        $restaurant->latitude = $request['latitude'];
         $restaurant->longtude = $request['longtude'];
         $restaurant->address = $request['address'];
+        $restaurant->address = $request['services'];
         $result = $restaurant->save();
 
         if ($result){
@@ -77,9 +78,9 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-        $restaurant  = Restaurant::with('Services')->with('Images')->findOrFail($id);
+        $restaurant  = Restaurant::with('Images')->findOrFail($id);
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Restaurant ' . $restaurant->id,
             'data' => $restaurant,
         ]);
@@ -99,21 +100,23 @@ class RestaurantController extends Controller
             'rate' => 'required|max:10|min:1|numeric',
             'hour_open' => 'required',
             'hour_close' => 'required',
-            'lattude' => 'required|numeric|min:-90|max:90',
+            'latitude' => 'required|numeric|min:-90|max:90',
             'longtude' => 'required|numeric|min:-180|max:180',
             'address' => 'required|string',
+            'services' => 'required'
         ]);
 
-        $restaurant  = Restaurant::with('Services')->with('Images')->findOrFail($id);
+        $restaurant  = Restaurant::with('Images')->findOrFail($id);
         
         $restaurant->name = $request['name'];
         $restaurant->phone = $request['phone'];
         $restaurant->rate = $request['rate'];
         $restaurant->hour_open = $request['hour_open'];
         $restaurant->hour_close = $request['hour_close'];
-        $restaurant->lattude = $request['lattude'];
+        $restaurant->latitude = $request['latitude'];
         $restaurant->longtude = $request['longtude'];
         $restaurant->address = $request['address'];
+        $restaurant->address = $request['services'];
         $result = $restaurant->save();
 
         if ($result){
@@ -132,47 +135,6 @@ class RestaurantController extends Controller
         ]);
     }
 
-    public function add_service(Request $request, $id){
-        $request->validate([
-            'type' => 'required|string',
-        ]);
-        $result = '';
-        $Services = Service::get();
-        foreach($Services as $Service){
-            if($Service->type == $request['type']){
-                if($Service->model_id == $id AND $Service->model_type = "App\Models\Restaurant"){
-                    $result = false;
-                    $message = 'This Service already exists';
-                }else{
-                    $service = new Service();
-                    $service->model_type = "App\Models\Restaurant";
-                    $service->model_id = $id;
-                    $service->type = $request['type'];
-                    $result = $service->save();
-                }
-                break;
-            }else{
-                $result = false;
-                $message = "Services didn't Add to Restaurant Successfully";
-            }
-        }
-
-
-        if ($result){
-            $status = 200;
-            $message = "Services Added to Restaurant Successfully";
-            $data = $result;
-        }else{
-            $status = false;
-            $message = $message;
-            $data = $result;
-        }
-        return response()->json([
-            'status' => $status, 
-            'message' => $message, 
-            'data' => $data
-        ]);
-    }
 
     public function add_image(Request $request, $id){
         $request->validate([
@@ -188,14 +150,14 @@ class RestaurantController extends Controller
         };
 
         $image = new Image();
-        $image->url = $path.$name;
-        $image->file_name = $name;
+        $image->image_url = $path.$name;
+        $image->name = $name;
         $image->model_type = "App\Models\Restaurant";
         $image->model_id = $id;
         $result = $image->save();
 
         if ($result){
-            $status = 200;
+            $status = true;
             $message = "Images Added to Restaurant Successfully";
             $data = $result;
         }else{

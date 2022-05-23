@@ -19,10 +19,11 @@ return new class extends Migration
             $table->string('description');
             $table->string('phone');
             $table->string('rate');
-            $table->float('lattude');
+            $table->float('latitude');
             $table->float('longtude');
             $table->string('address');
-            $table->string('hotelurl')->nullable();
+            $table->string('services');
+            $table->string('hotel_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
             

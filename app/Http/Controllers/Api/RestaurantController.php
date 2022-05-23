@@ -9,17 +9,17 @@ use App\Models\Restaurant;
 class RestaurantController extends Controller
 {
     public function index(){
-        $restaurants  = Restaurant::with('Images')->with('Services')->get();
+        $restaurants  = Restaurant::with('Images')->get();
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Restaurants',
             'data' => $restaurants,
         ]);
     }
     public function show($id){
-        $restaurant  = Restaurant::with('Images')->with('Services')->findOrFail($id);
+        $restaurant  = Restaurant::with('Images')->findOrFail($id);
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Restaurant ' . $restaurant->id,
             'data' => $restaurant,
         ]);

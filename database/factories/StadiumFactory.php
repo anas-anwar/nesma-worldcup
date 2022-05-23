@@ -25,11 +25,11 @@ class StadiumFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'description' => $this->faker->paragraph(),
+            'description' => $this->faker->text(),
             'phone' => $this->faker->phoneNumber(),
             'capacity' => rand(90000, 95000),
             'address' => $this->faker->address(),
-            'lattude' => $this->faker->latitude($min = -90, $max = 90),
+            'latitude' => $this->faker->latitude($min = -90, $max = 90),
             'longtude' => $this->faker->longitude($min = -180, $max = 180),
         ];
     }

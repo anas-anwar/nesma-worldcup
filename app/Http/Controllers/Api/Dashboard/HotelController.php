@@ -8,7 +8,6 @@ use App\Http\Requests\HotelRequests;
 use App\Models\Hotel;
 use App\Models\Image;
 use App\Models\Room;
-use App\Models\Service;
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
@@ -19,9 +18,9 @@ class HotelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $hotels  = Hotel::with('Images')->with('Services')->with('Room')->get();
+        $hotels  = Hotel::with('Images')->get();
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Hotels',
             'data' => $hotels,
         ]);
@@ -41,10 +40,11 @@ class HotelController extends Controller
             'description' => 'required',
             'phone' => 'required',
             'rate' => 'required|max:10|min:1|numeric',
-            'lattude' => 'required|numeric|min:-90|max:90',
+            'latitude' => 'required|numeric|min:-90|max:90',
             'longtude' => 'required|numeric|min:-180|max:180',
             'address' => 'required|string',
-            'hotelurl' => 'required',
+            'hotel_url' => 'required',
+            'services' => 'required'
         ]);
 
         $hotel = new Hotel();
@@ -52,14 +52,15 @@ class HotelController extends Controller
         $hotel->description = $request['description'];
         $hotel->phone = $request['phone'];
         $hotel->rate = $request['rate'];
-        $hotel->lattude = $request['lattude'];
+        $hotel->latitude = $request['latitude'];
         $hotel->longtude = $request['longtude'];
         $hotel->address = $request['address'];
-        $hotel->hotelurl = $request['hotelurl'];
+        $hotel->hotel_url = $request['hotel_url'];
+        $hotel->hotel_url = $request['services'];
         $result = $hotel->save();
 
         if ($result){
-            $status = 200;
+            $status = true;
             $message = "Hotel Added Successfully";
             $data = $result;
         }else{
@@ -81,55 +82,14 @@ class HotelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-        $hotel = Hotel::with('Images')->with('Services')->with('Room')->findOrFail($id);
+        $hotel = Hotel::with('Images')->findOrFail($id);
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Hotel' . $hotel->id,
             'data' => $hotel,
         ]);
     }
 
-    public function add_service(Request $request, $id){
-        $request->validate([
-            'type' => 'required|string',
-        ]);
-        $result = '';
-        $Services = Service::get();
-        foreach($Services as $Service){
-            if($Service->type == $request['type']){
-                if($Service->model_id == $id AND $Service->model_type = "App\Models\Hotel"){
-                    $result = false;
-                    $message = 'This Service already exists';
-                }else{
-                    $service = new Service();
-                    $service->model_type = "App\Models\Hotel";
-                    $service->model_id = $id;
-                    $service->type = $request['type'];
-                    $result = $service->save();
-                }
-                break;
-            }else{
-                $result = false;
-                $message = "Services didn't Add to Hotel Successfully";
-            }
-        }
-
-
-        if ($result){
-            $status = 200;
-            $message = "Services Added to Hotel Successfully";
-            $data = $result;
-        }else{
-            $status = false;
-            $message = $message;
-            $data = $result;
-        }
-        return response()->json([
-            'status' => $status, 
-            'message' => $message, 
-            'data' => $data
-        ]);
-    }
 
     public function add_image(Request $request, $id){
         $request->validate([
@@ -145,14 +105,14 @@ class HotelController extends Controller
         };
 
         $image = new Image();
-        $image->url = $path.$name;
-        $image->file_name = $name;
+        $image->image_url = $path.$name;
+        $image->name = $name;
         $image->model_type = "App\Models\Hotel";
         $image->model_id = $id;
         $result = $image->save();
 
         if ($result){
-            $status = 200;
+            $status = true;
             $message = "Images Added to Hotel Successfully";
             $data = $result;
         }else{
@@ -224,22 +184,24 @@ class HotelController extends Controller
             'description' => 'required',
             'phone' => 'required',
             'rate' => 'required|max:10|min:1|numeric',
-            'lattude' => 'required|numeric|min:-90|max:90',
+            'latitude' => 'required|numeric|min:-90|max:90',
             'longtude' => 'required|numeric|min:-180|max:180',
             'address' => 'required|string',
-            'hotelurl' => 'required',
+            'hotel_url' => 'required',
+            'services' => 'required'
         ]);
 
-        $hotel = Hotel::with('Images')->with('Services')->findOrFail($id);
+        $hotel = Hotel::with('Images')->findOrFail($id);
 
         $hotel->name = $request['name'];
         $hotel->description = $request['description'];
         $hotel->phone = $request['phone'];
         $hotel->rate = $request['rate'];
-        $hotel->lattude = $request['lattude'];
+        $hotel->latitude = $request['latitude'];
         $hotel->longtude = $request['longtude'];
         $hotel->address = $request['address'];
-        $hotel->hotelurl = $request['hotelurl'];
+        $hotel->hotel_url = $request['hotel_url'];
+        $hotel->hotel_url = $request['services'];
         $result = $hotel->save();
 
         if ($result){

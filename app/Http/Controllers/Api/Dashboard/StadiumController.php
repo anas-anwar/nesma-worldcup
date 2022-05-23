@@ -17,9 +17,9 @@ class StadiumController extends Controller
      */
     public function index()
     {
-        $stadiums = Stadium::with('Team')->with('Images')->get();
+        $stadiums = Stadium::with('Images')->get();
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Stadiums',
             'data' => $stadiums,
         ]);
@@ -39,7 +39,7 @@ class StadiumController extends Controller
             'phone' => 'required',
             'capacity' => 'required|numeric',
             'address' => 'required|string',
-            'lattude' => 'required|numeric|min:-90|max:90',
+            'latitude' => 'required|numeric|min:-90|max:90',
             'longtude' => 'required|numeric|min:-180|max:180',
         ]);
 
@@ -50,7 +50,7 @@ class StadiumController extends Controller
         $stadium->capacity = $request['capacity'];
         $stadium->address = $request['address'];
         $stadium->longtude = $request['longtude'];
-        $stadium->lattude = $request['lattude'];
+        $stadium->latitude = $request['latitude'];
         $result = $stadium->save();
 
         if ($result){
@@ -77,9 +77,9 @@ class StadiumController extends Controller
      */
     public function show($id)
     {
-        $stadium = Stadium::with('Team')->with('Images')->FindOrFail($id);
+        $stadium = Stadium::with('Images')->FindOrFail($id);
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Stadium ' . $stadium->id,
             'data' => $stadium,
         ]);
@@ -100,11 +100,11 @@ class StadiumController extends Controller
             'phone' => 'required',
             'capacity' => 'required',
             'address' => 'required|string',
-            'lattude' => 'required|numeric|min:-90|max:90',
+            'latitude' => 'required|numeric|min:-90|max:90',
             'longtude' => 'required|numeric|min:-180|max:180',
         ]);
 
-        $stadium = Stadium::with('Team')->with('Images')->FindOrFail($id);
+        $stadium = Stadium::with('Images')->FindOrFail($id);
 
         $stadium->name = $request['name'];
         $stadium->description = $request['description'];
@@ -112,7 +112,7 @@ class StadiumController extends Controller
         $stadium->capacity = $request['capacity'];
         $stadium->address = $request['address'];
         $stadium->longtude = $request['longtude'];
-        $stadium->lattude = $request['lattude'];
+        $stadium->latitude = $request['latitude'];
         $result = $stadium->save();
 
         if ($result){
@@ -146,14 +146,14 @@ class StadiumController extends Controller
         };
 
         $image = new Image();
-        $image->url = $path.$name;
-        $image->file_name = $name;
+        $image->image_url = $path.$name;
+        $image->name = $name;
         $image->model_type = "App\Models\Stadium";
         $image->model_id = $id;
         $result = $image->save();
 
         if ($result){
-            $status = 200;
+            $status = true;
             $message = "Images Added to Stadium Successfully";
             $data = $result;
         }else{

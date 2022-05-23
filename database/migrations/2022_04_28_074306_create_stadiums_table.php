@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('capacity');
             $table->string('address');
             $table->float('longtude');
-            $table->float('lattude');
+            $table->float('latitude');
             $table->timestamps();
             $table->softDeletes();
         });

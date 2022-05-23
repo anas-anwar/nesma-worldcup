@@ -25,8 +25,8 @@ class ImageFactory extends Factory
     {
         $model_type = ['App\Models\Hotel', 'App\Models\Restaurant', 'App\Models\Stadium'];
         return [
-            'url' => $this->faker->imageUrl(),
-            'file_name' => $this->faker->image(),
+            'image_url' => $this->faker->imageUrl(),
+            'name' => $this->faker->image(),
             'model_type' => $model_type[rand(0,2)],
             'model_id' => rand(1,10),
         ];

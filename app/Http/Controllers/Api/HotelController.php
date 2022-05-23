@@ -8,17 +8,17 @@ use App\Models\Hotel;
 class HotelController extends Controller
 {
     public function index(){
-        $hotels  = Hotel::with('Images')->with('Services')->get();
+        $hotels  = Hotel::with('Images')->get();
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Hotels',
             'data' => $hotels,
         ]);
     }
     public function show($id){
-        $hotel  = Hotel::with('Services')->with('Room')->with('Images')->findOrFail($id);
+        $hotel  = Hotel::with('Room')->with('Images')->findOrFail($id);
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Hotel' . $hotel->id,
             'data' => $hotel,
         ]);

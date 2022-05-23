@@ -24,14 +24,18 @@ class MatchModelFactory extends Factory
 
         $ends_at= Carbon::create($starts_at)->addHours(2);
 
+        $team_one = rand(1,10);
+        while( in_array( ($n = rand(1,10)), array($team_one) ) );
+        $team_two = $n;
+
         return [
             'date' => $this->faker->date(),
-            'star' => $starts_at,
+            'start' => $starts_at,
             'end' => $ends_at,
-            // 'round_id' => rand(1,10),
-            // 'stadium_id' => rand(1,10),
-            // 'localteam_id' => rand(1,10),
-            // 'visitorteam_id' => rand(1,10),
+            'round_id' => rand(1,10),
+            'stadium_id' => rand(1,10),
+            'localteam_id' => $team_one,
+            'visitorteam_id' => $team_two,
         ];
     }
 }

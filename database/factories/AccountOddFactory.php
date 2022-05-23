@@ -25,7 +25,8 @@ class AccountOddFactory extends Factory
     public function definition()
     {
         $team_one = rand(1,10);
-        $team_two = rand(1,10) != $team_one;
+        // $team_two = rand(1,10) != $team_one;
+        while( in_array( ($team_two = rand(1,10)), array($team_one) ) );
         $vote =[$team_one, $team_two];
         return [
             'name' => $this->faker->name(),

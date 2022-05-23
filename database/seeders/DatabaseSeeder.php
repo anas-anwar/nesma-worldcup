@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(1)->create();
         // \App\Models\Account::factory(10)->create();
         // \App\Models\Hotel::factory(10)->create();
         // \App\Models\Restaurant::factory(10)->create();
@@ -34,11 +34,14 @@ class DatabaseSeeder extends Seeder
         //         'name'=>'Yellow Card',
         //         'slug'=> Str::slug('Yellow Card', '-')
         //     ],
+        //     [
+        //         'name'=>'Goal',
+        //         'slug'=> Str::slug('Goal', '-')
+        //     ],
         // ]);
         // \App\Models\LineUp::factory(10)->create();
         // \App\Models\Event::factory(10)->create();
         // \App\Models\Room::factory(10)->create();
-        // \App\Models\Service::factory(10)->create();
         // \App\Models\Image::factory(10)->create();
         // \App\Models\AccountOdd::factory(10)->create();
     }

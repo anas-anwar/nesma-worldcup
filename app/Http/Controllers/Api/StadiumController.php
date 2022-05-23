@@ -11,7 +11,7 @@ class StadiumController extends Controller
     public function index(){
         $stadiums  = Stadium::with('Images')->get();
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Stadiums',
             'data' => $stadiums,
         ]);
@@ -19,7 +19,7 @@ class StadiumController extends Controller
     public function show($id){
         $stadium  = Stadium::with('Images')->findOrFail($id);
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Stadium ' . $stadium->id,
             'data' => $stadium,
         ]);

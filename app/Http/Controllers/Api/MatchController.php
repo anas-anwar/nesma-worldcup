@@ -28,7 +28,7 @@ class MatchController extends Controller
                 ->get();
         
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Matches',
             'data' => [
                 'Live Matches' => $Live_match
@@ -39,7 +39,7 @@ class MatchController extends Controller
     public function show($id){
         $match = MatchModel::with('LineUp')->with('Event')->with('Rounds')->with('LocalTeam')->with('VisitorTeam')->with('Stadiums')->findOrFail($id);
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'message' => 'Show Match' . $match->id,
             'data' => $match,
         ]);

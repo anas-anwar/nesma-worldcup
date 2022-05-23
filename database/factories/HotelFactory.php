@@ -23,15 +23,17 @@ class HotelFactory extends Factory
      */
     public function definition()
     {
+        $services = ['coffee', 'Wifi', 'delevery'];
         return [
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
             'phone' => $this->faker->phoneNumber(),
             'rate' => rand(1,10),
-            'lattude' => $this->faker->latitude($min = -90, $max = 90),
+            'latitude' => $this->faker->latitude($min = -90, $max = 90),
             'longtude' => $this->faker->longitude($min = -180, $max = 180),
             'address' => $this->faker->address(),
-            'hotelurl' => $this->faker->url(),
+            'services' => $services[rand(0,2)],
+            'hotel_url' => $this->faker->url(),
         ];
     }
 }
