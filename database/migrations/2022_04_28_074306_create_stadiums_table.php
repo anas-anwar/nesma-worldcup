@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('phone');
             $table->integer('capacity');
             $table->string('address');
-            $table->float('longtude');
-            $table->float('latitude');
+            $table->float('longtude',9,6);
+            $table->float('latitude',9,6);
             $table->timestamps();
             $table->softDeletes();
         });

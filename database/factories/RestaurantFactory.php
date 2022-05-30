@@ -33,7 +33,7 @@ class RestaurantFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
-            'rate' => rand(0,10),
+            'rate' => rand(0,5),
             'hour_open' => $hour_open,
             'hour_close' => $hour_close,
             'latitude' => $this->faker->latitude($min = -90, $max = 90),

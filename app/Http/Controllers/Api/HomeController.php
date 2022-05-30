@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\AccountOdd;
 use Illuminate\Http\Request;
 use App\Models\Hotel;
+use App\Models\Image;
 use App\Models\MatchModel;
 use App\Models\Restaurant;
 use App\Models\Stadium;
@@ -20,7 +21,6 @@ class HomeController extends Controller
         $current_time = Carbon::now();
 
         $Next_match = MatchModel::with('Rounds')
-                                ->with('Stadiums')
                                 ->with('LocalTeam')
                                 ->with('VisitorTeam')
                                 ->where('date', '>' ,$current_time->toDateString())
@@ -33,21 +33,22 @@ class HomeController extends Controller
                                 ->orderBy('start', 'asc')
                                 ->first();
 
-        $top_ten_hotels  = Hotel::orderBy('rate', 'desc')
-                    ->take(10)
-                    ->select('name', 'rate', 'description', 'address')
-                    ->get();
-
-        $top_ten_restaurants = Restaurant::with('Images')
+        $top_ten_hotels  = Hotel::addSelect('id','name', 'rate', 'description', 'address', 'longtude', 'latitude')
+                    ->with('images')
                     ->orderBy('rate', 'desc')
-                    ->take(10)
-                    ->select('name', 'rate', 'hour_open', 'hour_close', 'address')
+                    ->take(4)
                     ->get();
 
-        $top_ten_stadiums = Stadium::with('Team')->with('Images')
+        $top_ten_restaurants = Restaurant::addSelect('id','name', 'rate', 'hour_open', 'hour_close', 'address', 'longtude', 'latitude')
+                    ->with('images')
+                    ->orderBy('rate', 'desc')
+                    ->take(4)
+                    ->get();
+
+        $top_ten_stadiums = Stadium::addSelect('id','name', 'description', 'address', 'longtude', 'latitude')
+                    ->with(['images'])
                     ->orderBy('created_at', 'desc')
-                    ->take(10)
-                    ->select('name', 'description', 'address')
+                    ->take(4)
                     ->get();
 
 
@@ -55,10 +56,10 @@ class HomeController extends Controller
             'status' => true,
             'message' => 'Home Page',
             'data' => [
-                'Next_match' => $Next_match,
-                'Top 10 Hotels' => $top_ten_hotels,
-                'Top 10 Restaurants' => $top_ten_restaurants,
-                'Top 10 Stadiums' => $top_ten_stadiums,
+                'next_match' => $Next_match,
+                'hotels' => $top_ten_hotels,
+                'restaurants' => $top_ten_restaurants,
+                'stadiums' => $top_ten_stadiums,
             ],
         ]);
     }

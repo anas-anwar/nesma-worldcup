@@ -28,7 +28,7 @@ class HotelFactory extends Factory
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
             'phone' => $this->faker->phoneNumber(),
-            'rate' => rand(1,10),
+            'rate' => rand(1,5),
             'latitude' => $this->faker->latitude($min = -90, $max = 90),
             'longtude' => $this->faker->longitude($min = -180, $max = 180),
             'address' => $this->faker->address(),

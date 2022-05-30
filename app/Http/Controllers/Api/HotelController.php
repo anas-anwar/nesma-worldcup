@@ -7,16 +7,18 @@ use Illuminate\Http\Request;
 use App\Models\Hotel;
 class HotelController extends Controller
 {
-    public function index(){
-        $hotels  = Hotel::with('Images')->get();
+    public function index(Request $request){
+
+        $limit = 4;
+        $hotels  = Hotel::with('images')->limit($limit)->offset($request['page'] * $limit)->get();
         return response()->json([
             'status' => true,
             'message' => 'Show Hotels',
             'data' => $hotels,
         ]);
     }
-    public function show($id){
-        $hotel  = Hotel::with('Room')->with('Images')->findOrFail($id);
+    public function show( $id){
+        $hotel  = Hotel::with('rooms')->with('images')->findOrFail($id);
         return response()->json([
             'status' => true,
             'message' => 'Show Hotel' . $hotel->id,

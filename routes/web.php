@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\HotelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +18,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
+// Route::get('/dashboard', function () {
+//     // return view('welcome');
+//     return view('dashboard.index');
+// });
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dash', function () {
+        return view('dashboard.index');
     })->name('dashboard');
+
+    Route::get('/dash/hotels', [HotelController::class, 'index']);
 });

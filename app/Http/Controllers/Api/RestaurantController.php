@@ -8,8 +8,9 @@ use App\Models\Restaurant;
 
 class RestaurantController extends Controller
 {
-    public function index(){
-        $restaurants  = Restaurant::with('Images')->get();
+    public function index(Request $request){
+        $limit = 4;
+        $restaurants  = Restaurant::with('images')->limit($limit)->offset($request['page'] * $limit)->get();
         return response()->json([
             'status' => true,
             'message' => 'Show Restaurants',
@@ -17,7 +18,7 @@ class RestaurantController extends Controller
         ]);
     }
     public function show($id){
-        $restaurant  = Restaurant::with('Images')->findOrFail($id);
+        $restaurant  = Restaurant::with('images')->findOrFail($id);
         return response()->json([
             'status' => true,
             'message' => 'Show Restaurant ' . $restaurant->id,

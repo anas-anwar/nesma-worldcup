@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('phone');
-            $table->string('rate');
+            $table->float('rate');
             $table->float('latitude');
             $table->float('longtude');
             $table->string('address');

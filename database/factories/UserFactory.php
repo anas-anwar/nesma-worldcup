@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'username'=>'admin', 
             'email'=> 'admin@gmail.com',
             'password' => Hash::make('123456789'),
-            'type' => $this->faker->text(),
+            'type' => $this->faker->text(), // should be list of types
         ];
     }
 

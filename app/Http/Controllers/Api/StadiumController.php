@@ -8,8 +8,9 @@ use App\Models\Stadium;
 
 class StadiumController extends Controller
 {
-    public function index(){
-        $stadiums  = Stadium::with('Images')->get();
+    public function index(Request $request){
+        $limit = 4;
+        $stadiums  = Stadium::with('images')->limit($limit)->offset($request['page'] * $limit)->get();
         return response()->json([
             'status' => true,
             'message' => 'Show Stadiums',
@@ -17,7 +18,7 @@ class StadiumController extends Controller
         ]);
     }
     public function show($id){
-        $stadium  = Stadium::with('Images')->findOrFail($id);
+        $stadium  = Stadium::with('images')->findOrFail($id);
         return response()->json([
             'status' => true,
             'message' => 'Show Stadium ' . $stadium->id,

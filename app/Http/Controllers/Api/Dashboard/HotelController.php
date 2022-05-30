@@ -17,14 +17,14 @@ class HotelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index()
+    {
         $hotels  = Hotel::with('Images')->get();
         return response()->json([
             'status' => true,
             'message' => 'Show Hotels',
             'data' => $hotels,
         ]);
-        
     }
 
     /**
@@ -33,7 +33,8 @@ class HotelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $request->validate([
             'name' => 'required|string',
@@ -56,21 +57,21 @@ class HotelController extends Controller
         $hotel->longtude = $request['longtude'];
         $hotel->address = $request['address'];
         $hotel->hotel_url = $request['hotel_url'];
-        $hotel->hotel_url = $request['services'];
+        $hotel->services = $request['services'];
         $result = $hotel->save();
 
-        if ($result){
+        if ($result) {
             $status = true;
             $message = "Hotel Added Successfully";
             $data = $result;
-        }else{
+        } else {
             $status = false;
             $message = "Hotel didn't Add Successfully";
             $data = false;
         }
         return response()->json([
-            'status' => $status, 
-            'message' => $message, 
+            'status' => $status,
+            'message' => $message,
             'data' => $data
         ]);
     }
@@ -81,8 +82,9 @@ class HotelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id){
-        $hotel = Hotel::with('Images')->findOrFail($id);
+    public function show($id)
+    {
+        $hotel = Hotel::with(['images', 'rooms'])->findOrFail($id);
         return response()->json([
             'status' => true,
             'message' => 'Show Hotel' . $hotel->id,
@@ -91,84 +93,92 @@ class HotelController extends Controller
     }
 
 
-    public function add_image(Request $request, $id){
+    public function add_image(Request $request, $id)
+    {
         $request->validate([
-            'url' => 'required',
+            'fileName' => 'required',
         ]);
 
-        if($request->hasFile('url')){
-            $image = $request->file('url');
+        if ($request->hasFile('fileName')) {
+            $image = $request->file('fileName');
             $path = 'public/HotelsImages/';
-            $name = time()+rand(1, 10000000000) . '.' . $image->getClientOriginalExtension();
-            Storage::disk('local')->put($path.$name , file_get_contents($image));
-            Storage::disk('local')->exists($path.$name);
+            $name = time() + rand(1, 10000000000) . '.' . $image->getClientOriginalExtension();
+            Storage::disk('local')->put($path . $name, file_get_contents($image));
+            Storage::disk('local')->exists($path . $name);
         };
 
         $image = new Image();
-        $image->image_url = $path.$name;
+        $image->image_url = "storage/HotelsImages/" . $name;
         $image->name = $name;
         $image->model_type = "App\Models\Hotel";
         $image->model_id = $id;
         $result = $image->save();
 
-        if ($result){
+        if ($result) {
             $status = true;
             $message = "Images Added to Hotel Successfully";
             $data = $result;
-        }else{
+        } else {
             $status = false;
             $message = "Images didn't Add to Hotel Successfully";
             $data = $result;
         }
         return response()->json([
-            'status' => $status, 
-            'message' => $message, 
+            'status' => $status,
+            'message' => $message,
             'data' => $data
         ]);
     }
 
-    public function add_room(Request $request, $id){
-        
+    public function add_room(Request $request, $id)
+    {
+
         $request->validate([
             'type' => 'required|string',
-            'price' => 'required|numeric|min:1000|max:100000',
+            'price' => 'required|numeric|min:1|max:100000',
             'url' => 'required',
         ]);
-        
-        $Rooms = Room::get();
-        foreach($Rooms as $Room){
-            if($Room->type == $request['type']){
-                if($Room->hotel_id == $id){
-                    $result = false;
-                    $message = 'This room already exists';
-                }else{
-                    $room = new Room();
-                    $room->type = $request['type'];
-                    $room->price = $request['price'];
-                    $room->url = $request['url'];
-                    $room->hotel_id = $id;
-                    $result = $room->save();
-                }
-            }else{
-                $result = false;
-                $message = "Rooms didn't Add to Hotel Successfully";
-            }
-        }
 
-        if ($result){
+        // $Rooms = Room::where("hotel_id",$id)->get();
+        // foreach($Rooms as $Room){
+        //     if($Room->type == $request['type']){
+        //         if($Room->hotel_id == $id){
+        //             $result = false;
+        //             $message = 'This room already exists';
+        //         }else{
+        //             $room = new Room();
+        //             $room->type = $request['type'];
+        //             $room->price = $request['price'];
+        //             $room->url = $request['url'];
+        //             $room->hotel_id = $id;
+        //             $result = $room->save();
+        //         }
+        //     }else{
+        //         $result = false;
+        //         $message = "Rooms didn't Add to Hotel Successfully";
+        //     }
+        // }
+        $room = new Room();
+        $room->type = $request['type'];
+        $room->price = $request['price'];
+        $room->url = $request['url'];
+        $room->hotel_id = $id;
+        $result = $room->save();
+
+        if ($result) {
             $status = true;
             $message = "Rooms Added to Hotel Successfully";
             $data = $result;
-        }else{
+        } else {
             $status = false;
-            $message = $message;
+            $message = "Rooms didn't Add to Hotel Successfully";
             $data = $result;
         }
         return response()->json([
-            'status' => $status, 
-            'message' => $message, 
-            'data' => $data]);
-
+            'status' => $status,
+            'message' => $message,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -178,7 +188,8 @@ class HotelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'name' => 'required|string',
             'description' => 'required',
@@ -204,19 +215,19 @@ class HotelController extends Controller
         $hotel->hotel_url = $request['services'];
         $result = $hotel->save();
 
-        if ($result){
+        if ($result) {
             $status = true;
             $message = "Hotel Updated Successfully";
             $data = $result;
-        }else{
+        } else {
             $status = false;
             $message = "Hotel didn't Update Successfully";
             $data = false;
         }
 
         return response()->json([
-            'status' => $status, 
-            'message' => $message, 
+            'status' => $status,
+            'message' => $message,
             'data' => $data
         ]);
     }
@@ -227,12 +238,13 @@ class HotelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         $result = Hotel::findOrFail($id)->delete();
         return response()->json([
-            'status'=> true,
+            'status' => true,
             'message' => 'Hotel deleted Successfully',
-            'data'=> $result
+            'data' => $result
         ]);
     }
 }
