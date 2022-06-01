@@ -21,7 +21,16 @@ class HotelDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'hoteldatatable.action');
+            ->addColumn('name', function($data){
+                return "<a href='$data->hotel_url '>$data->name</a>";
+            })
+            ->addColumn('action', function($data){
+                return view('dashboard.Hotel.action', ['data'=> $data]);
+                })
+                ->rawColumns([
+                    'name',
+                    'action'
+                ]);
     }
 
     /**
@@ -32,7 +41,7 @@ class HotelDatatable extends DataTable
      */
     public function query()
     {
-        return Hotel::with('Images')->get();
+        return Hotel::query();
     }
 
     /**
@@ -43,18 +52,21 @@ class HotelDatatable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('hoteldatatable-table')
+            ->setTableId('dataTable')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('Bfrtip')
-            ->orderBy(1)
-            ->buttons(
-                Button::make('create'),
-                Button::make('export'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
-            );
+            ->dom('Blfrtip')
+            ->orderBy(2);
+            // ->parameters([
+            //     'buttons' => ['create', 'export', 'print', 'reset', 'reload'],
+            // ])
+            // ->buttons(
+            //     Button::make('create'),
+            //     Button::make('export'),
+            //     Button::make('print'),
+            //     Button::make('reset'),
+            //     Button::make('reload')
+            // );
     }
 
     /**
@@ -65,15 +77,21 @@ class HotelDatatable extends DataTable
     protected function getColumns()
     {
         return [
+            // Column::make('id'),
+            Column::make('name'),
+            // Column::make('description'),
+            Column::make('phone'),
+            Column::make('rate'),
+            // Column::make('latitude'),
+            // Column::make('longtude'),
+            Column::make('address'),
+            Column::make('services'),
+            // Column::make('hotel_url'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                // ->width(60)
                 ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
         ];
     }
 
@@ -82,8 +100,8 @@ class HotelDatatable extends DataTable
      *
      * @return string
      */
-    protected function filename()
-    {
-        return 'Hotel_' . date('YmdHis');
-    }
+    // protected function filename()
+    // {
+    //     return 'Hotel_' . date('YmdHis');
+    // }
 }

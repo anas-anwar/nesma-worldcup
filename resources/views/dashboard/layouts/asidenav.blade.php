@@ -44,7 +44,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ URL('/dash/hotels') }}" class="nav-link">
+              <a href="{{ URL('hotels') }}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Hotels</p>
               </a>

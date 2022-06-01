@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\Dashboard;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\MatchModel;
 
 class MatchController extends Controller
 {
@@ -15,12 +14,17 @@ class MatchController extends Controller
      */
     public function index()
     {
-        $matches = MatchModel::with('Rounds')->with('Stadiums')->with('LocalTeam')->with('VisitorTeam')->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'Show Matches',
-            'data' => $matches,
-        ]);
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -31,40 +35,7 @@ class MatchController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'date' => 'required|date',
-            'start' => 'required',
-            'end' => 'required',
-            'round_id' => 'required',
-            'stadium_id' => 'required',
-            'localteam_id' => 'required',
-            'visitorteam_id' => 'required',
-        ]);
-        
-        $match = new MatchModel();
-        $match->date = $request['date'];
-        $match->start = $request['start'];
-        $match->end = $request['end'];
-        $match->round_id = $request['round_id'];
-        $match->stadium_id = $request['stadium_id'];
-        $match->localteam_id = $request['localteam_id'];
-        $match->visitorteam_id = $request['visitorteam_id'];
-        $result = $match->save();
-
-        if ($result){
-            $status = true;
-            $message = "Match Added Successfully";
-            $data = $result;
-        }else{
-            $status = false;
-            $message = "Match didn't Add Successfully";
-            $data = false;
-        }
-        return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data,
-        ]);
+        //
     }
 
     /**
@@ -75,14 +46,18 @@ class MatchController extends Controller
      */
     public function show($id)
     {
-        $match = MatchModel::with('Rounds')
-        ->with(['Stadiums','LocalTeam','VisitorTeam','Event'])->findOrFail($id);
-        return response()->json([
-            'status' => true,
-            'message' => 'Show Match '. $match->id,
-            'data' => $match,
-        ]);
-        
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -94,40 +69,7 @@ class MatchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'date' => 'required|date',
-            'start' => 'required',
-            'end' => 'required',
-            'round_id' => 'required',
-            'stadium_id' => 'required',
-            'localteam_id' => 'required',
-            'visitorteam_id' => 'required',
-        ]);
-
-        $match = MatchModel::with('Rounds')->with('Stadiums')->with('LocalTeam')->with('VisitorTeam')->findOrFail($id);
-        
-        $match->date = $request['date'];
-        $match->start = $request['start'];
-        $match->end = $request['end'];
-        $match->round_id = $request['round_id'];
-        $match->stadium_id = $request['stadium_id'];
-        $match->localteam_id = $request['localteam_id'];
-        $match->visitorteam_id = $request['visitorteam_id'];
-        $result = $match->save();
-
-        if ($result){
-            $status = true;
-            $message = "Match Updated Successfully";
-            $data = $result;
-        }else{
-            $status = false;
-            $message = "Match didn't Update Successfully";
-            $data = false;
-        }
-        return response()->json([
-            'status' => $status, 
-            'message' => $message, 
-            'data' => $data]);
+        //
     }
 
     /**
@@ -138,11 +80,6 @@ class MatchController extends Controller
      */
     public function destroy($id)
     {
-        $result = MatchModel::findOrFail($id)->delete();
-        return response()->json([
-            'status'=> true,
-            'message' => 'Match deleted Successfully',
-            'data'=> $result
-        ]);
+        //
     }
 }

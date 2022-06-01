@@ -26,8 +26,7 @@
     <!-- Default box -->
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Title</h3>
-
+        <h3 class="card-title">{{ $title }}</h3>
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
             <i class="fas fa-minus"></i>
@@ -38,9 +37,21 @@
         </div>
       </div>
       <div class="card-body">
+        @foreach($errors->all() as $message)
+          <div class="alert alert-danger">{{$message}}</div>
+        @endforeach
+        @if (session()->has('add_status'))
+            @if (session('add_status'))
+                <div class="alert alert-success">SECCESS</div>
+            @else
+                <div class="alert alert-danger">FAILD</div>
+            @endif
+        @endif
+        <a href="{{ URL('hotels/create' ) }}" type="button" class="my-3 btn btn-primary" >
+          <i class="fa fa-plus"></i> Create New Hotel</a>
         {!! $dataTable->table([
         'id' => 'dataTable',
-        'class'=> 'dataTable table table-bordered table-striped table-hover w-auto'
+        'class'=> 'dataTable table table-bordered table-striped table-hover w-100'
         ]) !!}
       </div>
       <!-- /.card-body -->
@@ -56,6 +67,25 @@
 </div>
 @section('js')
 {!! $dataTable->Scripts() !!}
+@push('js')
+<script>
+  $(document).ready(function () {
+
+      $.ajaxSetup({
+          headers:{
+              'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('body').on('click', '.deletebutton', function () {
+        var id = $(this).attr('data-value');
+        var url = "{{ url('hotels') }}";
+        console.log(id);
+        Deletebutton(url, id);
+      });
+    });
+</script>
+@endpush
+
 @stop
 
 @stop

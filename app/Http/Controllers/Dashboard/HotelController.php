@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\HotelRequests;
-use App\DataTables\HotelDatatable;
 use App\Models\Hotel;
 use App\Models\Image;
 use App\Models\Room;
+use App\DataTables\HotelDatatable;
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
@@ -18,9 +17,19 @@ class HotelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(HotelDatatable $dataTable)
+    public function index(HotelDatatable $hotels)
     {
-        return $dataTable->render('Hotel.index');
+        return $hotels->render('dashboard.Hotel.index', ['title'=> 'Hotels Page']);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('dashboard.Hotel.create');
     }
 
     /**
@@ -36,7 +45,7 @@ class HotelController extends Controller
             'name' => 'required|string',
             'description' => 'required',
             'phone' => 'required',
-            'rate' => 'required|max:10|min:1|numeric',
+            // 'rate' => 'required|max:10|min:1|numeric',
             'latitude' => 'required|numeric|min:-90|max:90',
             'longtude' => 'required|numeric|min:-180|max:180',
             'address' => 'required|string',
@@ -48,7 +57,7 @@ class HotelController extends Controller
         $hotel->name = $request['name'];
         $hotel->description = $request['description'];
         $hotel->phone = $request['phone'];
-        $hotel->rate = $request['rate'];
+        $hotel->rate = 0;
         $hotel->latitude = $request['latitude'];
         $hotel->longtude = $request['longtude'];
         $hotel->address = $request['address'];
@@ -56,20 +65,7 @@ class HotelController extends Controller
         $hotel->services = $request['services'];
         $result = $hotel->save();
 
-        if ($result) {
-            $status = true;
-            $message = "Hotel Added Successfully";
-            $data = $result;
-        } else {
-            $status = false;
-            $message = "Hotel didn't Add Successfully";
-            $data = false;
-        }
-        return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data
-        ]);
+        return redirect('hotels')->with('add_status', $result);
     }
 
     /**
@@ -80,14 +76,73 @@ class HotelController extends Controller
      */
     public function show($id)
     {
-        $hotel = Hotel::with(['images', 'rooms'])->findOrFail($id);
-        return response()->json([
-            'status' => true,
-            'message' => 'Show Hotel' . $hotel->id,
-            'data' => $hotel,
-        ]);
+        $hotel = Hotel::with('images')->with('rooms')->findOrFail($id);
+        // dd($hotel);
+        return view('dashboard.Hotel.show', ['hotel' => $hotel]);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $hotel = Hotel::findOrFail($id);
+        return view('dashboard.Hotel.edit', ['hotel' => $hotel]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required',
+            'phone' => 'required',
+            // 'rate' => 'required|max:10|min:1|numeric',
+            'latitude' => 'required|numeric|min:-90|max:90',
+            'longtude' => 'required|numeric|min:-180|max:180',
+            'address' => 'required|string',
+            'hotel_url' => 'required',
+            // 'services' => 'required'
+        ]);
+
+        $hotel = Hotel::findOrFail($id);
+
+        $hotel->name = $request['name'];
+        $hotel->description = $request['description'];
+        $hotel->phone = $request['phone'];
+        $hotel->rate = 0;
+        $hotel->latitude = $request['latitude'];
+        $hotel->longtude = $request['longtude'];
+        $hotel->address = $request['address'];
+        $hotel->hotel_url = $request['hotel_url'];
+        $hotel->hotel_url = 'WIFI, Delevary';
+        $result = $hotel->save();
+
+        return redirect('hotels')->with('add_status', $result);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        Hotel::findOrFail($id)->delete();
+        return response()->json([
+            'success'=> true,
+        ]);
+    }
 
     public function add_image(Request $request, $id)
     {
@@ -174,73 +229,6 @@ class HotelController extends Controller
             'status' => $status,
             'message' => $message,
             'data' => $data
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'required',
-            'phone' => 'required',
-            'rate' => 'required|max:10|min:1|numeric',
-            'latitude' => 'required|numeric|min:-90|max:90',
-            'longtude' => 'required|numeric|min:-180|max:180',
-            'address' => 'required|string',
-            'hotel_url' => 'required',
-            'services' => 'required'
-        ]);
-
-        $hotel = Hotel::with('Images')->findOrFail($id);
-
-        $hotel->name = $request['name'];
-        $hotel->description = $request['description'];
-        $hotel->phone = $request['phone'];
-        $hotel->rate = $request['rate'];
-        $hotel->latitude = $request['latitude'];
-        $hotel->longtude = $request['longtude'];
-        $hotel->address = $request['address'];
-        $hotel->hotel_url = $request['hotel_url'];
-        $hotel->hotel_url = $request['services'];
-        $result = $hotel->save();
-
-        if ($result) {
-            $status = true;
-            $message = "Hotel Updated Successfully";
-            $data = $result;
-        } else {
-            $status = false;
-            $message = "Hotel didn't Update Successfully";
-            $data = false;
-        }
-
-        return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $result = Hotel::findOrFail($id)->delete();
-        return response()->json([
-            'status' => true,
-            'message' => 'Hotel deleted Successfully',
-            'data' => $result
         ]);
     }
 }

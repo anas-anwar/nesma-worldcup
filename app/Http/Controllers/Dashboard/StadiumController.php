@@ -1,12 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\Dashboard;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Image;
 use Illuminate\Http\Request;
-use App\Models\Stadium;
-use Illuminate\Support\Facades\Storage;
 
 class StadiumController extends Controller
 {
@@ -17,12 +14,17 @@ class StadiumController extends Controller
      */
     public function index()
     {
-        $stadiums = Stadium::with('images')->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'Show Stadiums',
-            'data' => $stadiums,
-        ]);
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -33,40 +35,7 @@ class StadiumController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'required',
-            'phone' => 'required',
-            'capacity' => 'required|numeric',
-            'address' => 'required|string',
-            'latitude' => 'required|numeric|min:-90|max:90',
-            'longtude' => 'required|numeric|min:-180|max:180',
-        ]);
-
-        $stadium = new Stadium();
-        $stadium->name = $request['name'];
-        $stadium->description = $request['description'];
-        $stadium->phone = $request['phone'];
-        $stadium->capacity = $request['capacity'];
-        $stadium->address = $request['address'];
-        $stadium->longtude = $request['longtude'];
-        $stadium->latitude = $request['latitude'];
-        $result = $stadium->save();
-
-        if ($result){
-            $status = true;
-            $message = "Stadium Added Successfully";
-            $data = $result;
-        }else{
-            $status = false;
-            $message = "Stadium didn't Add Successfully";
-            $data = false;
-        }
-        return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data,
-        ]);
+        //
     }
 
     /**
@@ -77,12 +46,18 @@ class StadiumController extends Controller
      */
     public function show($id)
     {
-        $stadium = Stadium::with('images')->FindOrFail($id);
-        return response()->json([
-            'status' => true,
-            'message' => 'Show Stadium ' . $stadium->id,
-            'data' => $stadium,
-        ]);
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -94,78 +69,7 @@ class StadiumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'required',
-            'phone' => 'required',
-            'capacity' => 'required',
-            'address' => 'required|string',
-            'latitude' => 'required|numeric|min:-90|max:90',
-            'longtude' => 'required|numeric|min:-180|max:180',
-        ]);
-
-        $stadium = Stadium::with('images')->FindOrFail($id);
-
-        $stadium->name = $request['name'];
-        $stadium->description = $request['description'];
-        $stadium->phone = $request['phone'];
-        $stadium->capacity = $request['capacity'];
-        $stadium->address = $request['address'];
-        $stadium->longtude = $request['longtude'];
-        $stadium->latitude = $request['latitude'];
-        $result = $stadium->save();
-
-        if ($result){
-            $status = true;
-            $message = "Stadium Updated Successfully";
-            $data = $result;
-        }else{
-            $status = false;
-            $message = "Stadium didn't Update Successfully";
-            $data = false;
-        }
-        return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data,
-        ]);
-
-    }
-
-    public function add_image(Request $request, $id){
-        $request->validate([
-            'url' => 'required',
-        ]);
-
-        if($request->hasFile('url')){
-            $image = $request->file('url');
-            $path = 'public/StadiumsImages/';
-            $name = time()+rand(1, 10000000000) . '.' . $image->getClientOriginalExtension();
-            Storage::disk('local')->put($path.$name , file_get_contents($image));
-            Storage::disk('local')->exists($path.$name);
-        };
-
-        $image = new Image();
-        $image->image_url = "storage/StadiumsImages/" . $name;
-        $image->name = $name;
-        $image->model_type = "App\Models\Stadium";
-        $image->model_id = $id;
-        $result = $image->save();
-
-        if ($result){
-            $status = true;
-            $message = "Images Added to Stadium Successfully";
-            $data = $result;
-        }else{
-            $status = false;
-            $message = "Images didn't Add to Stadium Successfully";
-            $data = $result;
-        }
-        return response()->json([
-            'status' => $status, 
-            'message' => $message, 
-            'data' => $data
-        ]);
+        //
     }
 
     /**
@@ -176,11 +80,6 @@ class StadiumController extends Controller
      */
     public function destroy($id)
     {
-        $result = Stadium::findOrFail($id)->delete();
-        return response()->json([
-            'status'=> true,
-            'message' => 'Stadium deleted Successfully',
-            'data'=> $result
-        ]);
+        //
     }
 }
