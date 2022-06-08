@@ -85,7 +85,6 @@ class HotelDatatable extends DataTable
             // Column::make('latitude'),
             // Column::make('longtude'),
             Column::make('address'),
-            Column::make('services'),
             // Column::make('hotel_url'),
             Column::computed('action')
                 ->exportable(false)

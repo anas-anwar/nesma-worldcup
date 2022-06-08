@@ -33,13 +33,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     //------------------------ Hotel ------------------------     
-Route::resource('hotels', HotelController::class);
-// Route::Post('/dash/add/hotel', [HotelController::class, 'store']);
-// Route::put('/dash/edit/hotel/{id}', [HotelController::class, 'update']);
-// Route::get('/dash/show/hotel/{id}', [HotelController::class, 'show']);
-// Route::delete('/dash/destroy/hotel/{id}', [HotelController::class, 'destroy']);
-Route::Post('add_room/hotel/{id}', [HotelController::class, 'add_room']);
-Route::Post('add_image/hotel/{id}', [HotelController::class, 'add_image']);
+    Route::resource('hotels', HotelController::class);
+        //------------------------ Hotel Rooms ------------------------
+    Route::get('hotels/room/{id}', [HotelController::class, 'add_room']);
+    Route::Post('hotels/room/id', [HotelController::class, 'store_room']);
+    Route::get('hotels/editroom/{id}', [HotelController::class, 'edit_room']);
+    Route::Post('hotels/updateroom/{id}', [HotelController::class, 'update_room']);
+    Route::delete('hotels/deleteroom/{id}', [HotelController::class, 'delete_room']);
+        //------------------------ Hotel Services ------------------------
+    // Route::get('hotels/room/{id}', [HotelController::class, 'add_room']);
+    // Route::Post('hotels/room/{id}', [HotelController::class, 'store_room']);
+    // Route::get('hotels/editroom/{id}', [HotelController::class, 'edit_room']);
+    // Route::Post('hotels/updateroom/{id}', [HotelController::class, 'update_room']);
+    // Route::delete('hotels/deleteroom/{id}', [HotelController::class, 'delete_room']);
+        //------------------------ Hotel Images ------------------------
+    Route::get('hotels/addImages/{id}', [HotelController::class,'addImages']);
+    Route::post('hotels/storeImages/{id}', [HotelController::class,'storeImages']);
+    Route::delete('hotels/deleteImage/{id}', [HotelController::class,'deleteImage']);
 
 // //------------------------ Restaurant ------------------------
 // Route::get('/dash/restaurants', [RestaurantController::class, 'index']);

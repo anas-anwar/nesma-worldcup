@@ -13,4 +13,8 @@ class Restaurant extends Model
     public function images(){ // 1 - M relationship (Many) with Eloquent Polymorphic Relations
         return $this->morphMany(Image::class, 'model');
     }
+
+    public function services(){ // Eloquent Polymorphic Relations
+        return $this->morphMany(Service::class, 'model');
+    }
 }

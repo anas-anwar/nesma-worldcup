@@ -7,8 +7,17 @@
     <i class="fa fa-trash"></i></a>
 </div>
 <div class="row justify-content-center my-2">
-    <a href="{{ URL('add_room/hotel/{id}' ) }}" type="button" class="mx-1 btn btn-outline-primary" >
-    <i class="fa fa-plus"></i> Add Room</a>
-    <a href="{{ URL('add_image/hotel/{id}' ) }}" type="button" class="mx-1 btn btn-outline-primary" >
-    <i class="fa fa-image"></i> Add Image</a>
+    <a  href="{{URL('hotels/room/'. $data->id)}}" id="RoomButton" data-value="{{$data->id}}" type="button" class="mx-1 btn btn-outline-primary" >
+    <i class="fa fa-plus"></i> Rooms</a>
+    <a  href="{{URL('hotels/addServices/'. $data->id)}}" id="ServiceButton" data-value="{{$data->id}}" type="button" class="mx-1 btn btn-outline-primary" >
+    <i class="fa fa-plus"></i> Services</a>
+    <a href="{{ URL('hotels/addImages/'. $data->id ) }}" id="ImageButton" type="button" class="mx-1 btn btn-outline-primary" >
+    <i class="fa fa-plus"></i> Images</a>
 </div>
+
+
+@push('js')
+<script>
+    
+</script>
+@endpush

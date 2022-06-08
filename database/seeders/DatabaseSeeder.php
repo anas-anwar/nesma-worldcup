@@ -50,5 +50,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Room::factory(10)->create();
         \App\Models\Image::factory(10)->create();
         \App\Models\AccountOdd::factory(10)->create();
+        \App\Models\Service::factory(10)->create();
     }
 }
