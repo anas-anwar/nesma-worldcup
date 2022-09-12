@@ -18,8 +18,10 @@ return new class extends Migration
             $table->foreign('match_id')->references('id')->on('matches')->cascadeOnDelete();
             $table->unsignedBigInteger('team_id');
             $table->foreign('team_id')->references('id')->on('teams')->cascadeOnDelete();
-            $table->unsignedBigInteger('player_id');
-            $table->foreign('player_id')->references('id')->on('players')->cascadeOnDelete();
+            $table->unsignedBigInteger('player1_id');
+            $table->foreign('player1_id')->references('id')->on('players')->cascadeOnDelete();
+            $table->unsignedBigInteger('player2_id')->nullable();
+            $table->foreign('player2_id')->references('id')->on('players')->cascadeOnDelete();
             $table->unsignedBigInteger('type_of_events_id');
             $table->foreign('type_of_events_id')->references('id')->on('type_of_events')->cascadeOnDelete();
         });
@@ -35,7 +37,8 @@ return new class extends Migration
         Schema::table('events', function (Blueprint $table) {
             $table->dropColumn('match_id');
             $table->dropColumn('team_id');
-            $table->dropColumn('player_id');
+            $table->dropColumn('player1_id');
+            $table->dropColumn('player2_id');
             $table->dropColumn('type_of_events_id');
             
         });

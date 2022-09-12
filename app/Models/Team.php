@@ -18,13 +18,13 @@ class Team extends Model
     public function Event(){ // 1 - M relationship (One)
         return $this->hasMany(Event::class);
     }
-    public function Player(){ // 1 - M relationship (One)
+    public function Players(){ // 1 - M relationship (One)
         return $this->hasMany(Player::class);
     }
     public function Stadium(){ // 1 - 1 relationship (with forigen key)
         return $this->belongsTo(Stadium::class, 'stadium_id');
     }
-    public function Groups(){ // 1 - M relationship (Many)
+    public function Group(){ // 1 - M relationship (Many)
         return $this->belongsTo(Group::class, 'group_id');
     }
 

@@ -9,7 +9,7 @@ class Group extends Model
     public $timestamps = false;
     use HasFactory;
 
-    public function Team(){ // 1 - M relationship (One)
+    public function Teams(){ // 1 - M relationship (One)
         return $this->hasMany(Team::class);
     }
 }

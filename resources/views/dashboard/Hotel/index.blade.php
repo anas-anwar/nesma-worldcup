@@ -12,8 +12,8 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Hotels</li>
+            <li class="breadcrumb-item"><a href=" {{url('dash')}}" class="{{ !Route::is('dashboard') ? 'notActive' : '' }}">Home</a></li>
+            <li class="breadcrumb-item active"><a href="{{url('hotels')}}" class="{{ !Route::is('hotels.index') ? 'notActive' : '' }}">Hotels</a></li>
           </ol>
         </div>
       </div>
@@ -38,16 +38,16 @@
       </div>
       <div class="card-body">
         @foreach($errors->all() as $message)
-          <div class="alert alert-danger">{{$message}}</div>
+        <div class="alert alert-danger">{{$message}}</div>
         @endforeach
         @if (session()->has('add_status'))
-            @if (session('add_status'))
-                <div class="alert alert-success">SECCESS</div>
-            @else
-                <div class="alert alert-danger">FAILD</div>
-            @endif
+        @if (session('add_status'))
+        <div class="alert alert-success">SECCESS</div>
+        @else
+        <div class="alert alert-danger">FAILD</div>
         @endif
-        <a href="{{ URL('hotels/create' ) }}" type="button" class="my-3 btn btn-primary" >
+        @endif
+        <a href="{{ URL('hotels/create' ) }}" type="button" class="my-3 btn btn-primary">
           <i class="fa fa-plus"></i> Create New Hotel</a>
         {!! $dataTable->table([
         'id' => 'dataTable',
@@ -69,20 +69,20 @@
 {!! $dataTable->Scripts() !!}
 @push('js')
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
 
-      $.ajaxSetup({
-          headers:{
-              'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-          }
-      });
-      $('body').on('click', '.deletebutton', function () {
-        var id = $(this).attr('data-value');
-        var url = "{{ url('hotels') }}";
-        console.log(id);
-        Deletebutton(url, id);
-      });
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
     });
+    $('body').on('click', '.deletebutton', function() {
+      var id = $(this).attr('data-value');
+      var url = "{{ url('hotels') }}";
+      console.log(id);
+      Deletebutton(url, id);
+    });
+  });
 </script>
 @endpush
 

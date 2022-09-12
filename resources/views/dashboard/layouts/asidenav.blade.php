@@ -1,21 +1,13 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 " style="height: 100vh !important;">
   <!-- Brand Logo -->
-  <a href="{{URL('/dash')}}" class="brand-link">
-    <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">AdminLTE 3</span>
+  <a href="{{URL('hotels')}}" class="brand-link">
+    <img src="{{ asset('dist/img/worldcuplogo.png') }}" alt="AdminLTE Logo" class="brand-image ">
+    <span class="brand-text font-weight-light" style=" font-weight: bold !important;">WORLD CUP</span>
   </a>
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <!-- Sidebar user (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="image">
-        <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
-      </div>
-      <div class="info">
-        <a href="#" class="d-block">Alexander Pierce</a>
-      </div>
-    </div>
+
 
     <!-- SidebarSearch Form -->
     <div class="form-inline">
@@ -34,7 +26,7 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
@@ -45,22 +37,63 @@
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ URL('hotels') }}" class="nav-link">
+              @if(Route::current()->getName()=="hotels.index")
+                <i class="fa fa-circle nav-icon" ></i>
+
+              @else
                 <i class="far fa-circle nav-icon"></i>
+                @endif
+              
                 <p>Hotels</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="index2.html" class="nav-link">
+              <a href="{{ URL('resturents') }}" class="nav-link">
+                @if(Route::current()->getName()=="resturents.index")
+                <i class="fa fa-circle nav-icon" ></i>
+
+              @else
                 <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v2</p>
+                @endif
+                <p>Resturents</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="index3.html" class="nav-link">
+              <a href="{{ URL('stadiums') }}" class="nav-link">
+                @if(Route::current()->getName()=="stadiums.index")
+                <i class="fa fa-circle nav-icon" ></i>
+
+              @else
                 <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v3</p>
+                @endif
+                <p>Stadiums</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ URL('teams') }}" class="nav-link">
+                @if(Route::current()->getName()=="teams.index")
+                <i class="fa fa-circle nav-icon" ></i>
+
+              @else
+                <i class="far fa-circle nav-icon"></i>
+                @endif
+                <p>Teams</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="{{ URL('matches') }}" class="nav-link">
+                @if(Route::current()->getName()=="matches.index")
+                <i class="fa fa-circle nav-icon" ></i>
+
+              @else
+                <i class="far fa-circle nav-icon"></i>
+                @endif
+                <p>Matches</p>
+              </a>
+            </li>
+
+
           </ul>
         </li>
         <li class="nav-item">
@@ -71,7 +104,7 @@
             {{ csrf_field() }}
           </form>
         </li>
-        <!-- <li class="nav-item">
+        <li class="nav-item">
           <a href="../widgets.html" class="nav-link">
             <i class="nav-icon fas fa-th"></i>
             <p>
@@ -297,34 +330,111 @@
               </a>
             </li>
           </ul>
+        </li> -->
+        <li class="nav-header">
+          <p>DASHBOARD</p>
         </li>
-        <li class="nav-header">EXAMPLES</li>
+
         <li class="nav-item">
-          <a href="../calendar.html" class="nav-link">
-            <i class="nav-icon far fa-calendar-alt"></i>
+          <a href="{{url('hotels')}}" class="nav-link {{ Route::is('hotels*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-h-square"></i>
             <p>
-              Calendar
-              <span class="badge badge-info right">2</span>
+              Hotels
+
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{url('resturents')}}" class="nav-link {{ Route::is('resturents*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-home"></i>
+            <p>
+              Resturents
+
             </p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="../gallery.html" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
+          <a href="{{url('stadiums')}}" class="nav-link {{ Route::is('stadiums*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-map-marker" aria-hidden="true"></i>
             <p>
-              Gallery
+              Stadiums
+
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{url('teams')}}" class="nav-link {{ Route::is('teams*') ? 'active' : '' }}">
+            <i class="nav-icon far fa fa-users"></i>
+            <p>
+              Teams
+
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{url('matches')}}" class="nav-link {{ Route::is('matches*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-trophy"></i>
+            <p>
+              Matches
+
             </p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="../kanban.html" class="nav-link">
-            <i class="nav-icon fas fa-columns"></i>
+          <a href="{{url('medicalcenters')}}" class="nav-link {{ Route::is('medicalcenters*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-syringe"></i>
             <p>
-              Kanban Board
+              Medical Centers
+
             </p>
           </a>
         </li>
         <li class="nav-item">
+          <a href="{{url('metrostations')}}" class="nav-link {{ Route::is('metrostations*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-bus"></i>
+            <p>
+              Metro Stations
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{url('touristicplaces')}}" class="nav-link {{ Route::is('touristicplaces*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-torii-gate"></i>
+            <p>
+              Touristic Places
+            </p>
+          </a>
+        </li>
+        @if(Auth::user()->type == 'admin')
+        <li class="nav-item">
+          <a href="{{url('services')}}" class="nav-link {{ Route::is('services*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-list-ul"></i>
+            <p>
+              Services
+
+            </p>
+          </a>
+        </li>
+        @endif
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+            <i class="nav-icon fa fa-signout"></i>
+
+            logout
+          </a>
+
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            {{ csrf_field() }}
+          </form>
+        </li>
+
+
+        <!-- <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="nav-icon far fa-envelope"></i>
             <p>

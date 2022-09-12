@@ -15,7 +15,10 @@ class MatchController extends Controller
      */
     public function index()
     {
-        $matches = MatchModel::with('Rounds')->with('Stadiums')->with('LocalTeam')->with('VisitorTeam')->get();
+
+        $limit = 4;
+      //  $hotels  = Hotel::with('images')->limit($limit)->offset($request['page'] * $limit)->get();
+        $matches = MatchModel::with(['round'])->with('stadium')->with('localTeam')->with('visitorTeam')->get();
         return response()->json([
             'status' => true,
             'message' => 'Show Matches',
@@ -75,8 +78,8 @@ class MatchController extends Controller
      */
     public function show($id)
     {
-        $match = MatchModel::with('Rounds')
-        ->with(['Stadiums','LocalTeam','VisitorTeam','Event'])->findOrFail($id);
+        $match = MatchModel::with('round')
+        ->with(['stadium','localTeam','visitorTeam','Event'])->findOrFail($id);
         return response()->json([
             'status' => true,
             'message' => 'Show Match '. $match->id,
@@ -104,7 +107,7 @@ class MatchController extends Controller
             'visitorteam_id' => 'required',
         ]);
 
-        $match = MatchModel::with('Rounds')->with('Stadiums')->with('LocalTeam')->with('VisitorTeam')->findOrFail($id);
+        $match = MatchModel::with('round')->with('stadium')->with('localTeam')->with('visitorTeam')->findOrFail($id);
         
         $match->date = $request['date'];
         $match->start = $request['start'];

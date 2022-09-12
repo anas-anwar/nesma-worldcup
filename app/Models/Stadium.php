@@ -20,4 +20,9 @@ class Stadium extends Model
     public function Team(){ // 1 - 1 relationship
         return $this->hasOne(Team::class);
     }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoriteFor');
+    }
 }

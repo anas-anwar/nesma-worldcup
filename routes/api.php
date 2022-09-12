@@ -19,7 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [Api\AuthController::class, 'login']);
+Route::post('/signup', [Api\AuthController::class, 'signup']);
 
+// Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/remove_account', [Api\AuthController::class, 'remove_account']);
+// });
 //-------------------------------- Dashboard --------------------------------
 // Route::middleware('auth:sanctum')->group(function () {
 //------------------------ Hotel ------------------------     
@@ -47,11 +51,11 @@ Route::get('/dashboard/show/team/{id}', [App\Http\Controllers\Api\Dashboard\Team
 Route::delete('/dashboard/destroy/team/{id}', [App\Http\Controllers\Api\Dashboard\TeamController::class, 'destroy']);
 
 //------------------------ Match ------------------------
-Route::get('/dashboard/matches', [App\Http\Controllers\Api\Dashboard\MatchController::class, 'index']);
-Route::Post('/dashboard/add/match', [App\Http\Controllers\Api\Dashboard\MatchController::class, 'store']);
-Route::put('/dashboard/edit/match/{id}', [App\Http\Controllers\Api\Dashboard\MatchController::class, 'update']);
-Route::get('/dashboard/show/match/{id}', [App\Http\Controllers\Api\Dashboard\MatchController::class, 'show']);
-Route::delete('/dashboard/destroy/match/{id}', [App\Http\Controllers\Api\Dashboard\MatchController::class, 'destroy']);
+
+// Route::Post('/dashboard/add/match', [App\Http\Controllers\Api\Dashboard\AllMatchController::class, 'store']);
+// Route::put('/dashboard/edit/match/{id}', [App\Http\Controllers\Api\Dashboard\AllMatchController::class, 'update']);
+// Route::get('/dashboard/show/match/{id}', [App\Http\Controllers\Api\Dashboard\AllMatchController::class, 'show']);
+// Route::delete('/dashboard/destroy/match/{id}', [App\Http\Controllers\Api\Dashboard\AllMatchController::class, 'destroy']);
 
 
 //------------------------ Stadium ------------------------
@@ -69,15 +73,44 @@ Route::post('/logout', [Api\AuthController::class, 'logout']);
 // });
 //-------------------------------- Mobile --------------------------------
 Route::get('/Home', [App\Http\Controllers\Api\HomeController::class, 'index']);
-Route::post('/Home/voting/{account_id}/{match_id}', [App\Http\Controllers\Api\HomeController::class, 'voting']);
+Route::get('/accounts', [App\Http\Controllers\Api\HomeController::class, 'accounts']);
+Route::post('/create_account', [App\Http\Controllers\Api\HomeController::class, 'create_account']);
+Route::post('/Home/voting/{match_id}/{account_id}', [App\Http\Controllers\Api\HomeController::class, 'voting']);
 
+
+Route::get('/allmatches', [App\Http\Controllers\Api\AllMatchesController::class, 'index']);
 Route::get('/live_matches', [App\Http\Controllers\Api\MatchController::class, 'index']);
+Route::get('/match/{id}/{account_id}', [App\Http\Controllers\Api\MatchController::class, 'show']);
 
 Route::get('/stadiums', [App\Http\Controllers\Api\StadiumController::class, 'index']);
 Route::get('/stadium/{id}', [App\Http\Controllers\Api\StadiumController::class, 'show']);
 
 Route::get('/hotels', [App\Http\Controllers\Api\HotelController::class, 'index']);
 Route::get('/hotel/{id}', [App\Http\Controllers\Api\HotelController::class, 'show']);
+Route::post('/hotels/search', [App\Http\Controllers\Api\HotelController::class, 'search']);
+Route::post('/hotels/nearHotels', [App\Http\Controllers\Api\HotelController::class, 'nearHotels']);
 
 Route::get('/restaurants', [App\Http\Controllers\Api\RestaurantController::class, 'index']);
 Route::get('/restaurant/{id}', [App\Http\Controllers\Api\RestaurantController::class, 'show']);
+Route::post('/restaurants/serach', [App\Http\Controllers\Api\RestaurantController::class, 'search']);
+Route::post('/restaurants/nearResturents', [App\Http\Controllers\Api\RestaurantController::class, 'nearResturents']);
+
+Route::get('/medical_centers', [App\Http\Controllers\Api\MedicalCenterController::class, 'index']);
+Route::get('/medical_center/{id}', [App\Http\Controllers\Api\MedicalCenterController::class, 'show']);
+Route::post('/medical_centers/search', [App\Http\Controllers\Api\MedicalCenterController::class, 'search']);
+Route::post('/medical_centers/nearMedicalCenters', [App\Http\Controllers\Api\MedicalCenterController::class, 'nearMedicalCenters']);
+
+
+Route::get('/metro_stations', [App\Http\Controllers\Api\MetroStationController::class, 'index']);
+Route::get('/metro_station/{id}', [App\Http\Controllers\Api\MetroStationController::class, 'show']);
+Route::post('/metro_stations/search', [App\Http\Controllers\Api\MetroStationController::class, 'search']);
+Route::post('/metro_stations/nearMetroStations', [App\Http\Controllers\Api\MetroStationController::class, 'nearMetroStations']);
+
+
+Route::get('/touristic_places', [App\Http\Controllers\Api\TouristicPlaceController::class, 'index']);
+Route::get('/touristic_place/{id}', [App\Http\Controllers\Api\TouristicPlaceController::class, 'show']);
+Route::post('/touristic_places/search', [App\Http\Controllers\Api\TouristicPlaceController::class, 'search']);
+Route::post('/touristic_places/nearTouristicPlaces', [App\Http\Controllers\Api\TouristicPlaceController::class, 'nearTouristicPlaces']);
+
+Route::get('/myfavorits', [App\Http\Controllers\Api\FavoriteController::class, 'index']);
+Route::post('/favorit', [App\Http\Controllers\Api\FavoriteController::class, 'add_remove']);

@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone');
-            $table->string('rate');
+            $table->float('rate');
             $table->time('hour_open');
             $table->time('hour_close');
             $table->string('menu_url', 255)->nullable();
-            $table->float('latitude');
-            $table->float('longtude');
+            $table->double('latitude');
+            $table->double('longtude');
             $table->string('address');
             $table->string('services');
             $table->timestamps();

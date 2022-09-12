@@ -13,4 +13,12 @@ class Account extends Model
     public function AccountOdds(){ // 1 - M relationship (One)
         return $this->hasMany(AccountOdds::class);
     }
+
+    
+    public function favorite()
+    {
+        return $this->belongsTo(Favorite::class);
+    }
+
+    
 }

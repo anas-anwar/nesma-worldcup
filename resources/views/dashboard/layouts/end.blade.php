@@ -45,4 +45,45 @@
             }
         })
     };
+
+
+
+
+    function DeleteImage(url='',id = ''){
+        swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this data!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: "DELETE",
+                    url: url+"/"+id,
+                    data:  { id: id, _token: '{{csrf_token()}}' },
+                    dataType: "json",
+                    success: function (response) {
+                        swal("Poof! Your data has been deleted!", {
+                            icon: "success",
+                            
+                        }).then(function(){ 
+                            location.reload();
+                                            }
+                                );
+                    }
+                })     
+                   
+                
+            } else {
+                swal("Your Data is safe!");
+            }
+        })
+    };
+
+
+
+
+    
 </Script>

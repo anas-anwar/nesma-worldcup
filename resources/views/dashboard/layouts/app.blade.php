@@ -6,6 +6,12 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
+  <style>
+ a.notActive{
+   color: #6c757d;
+ }
+
+    </style>
   <!-- Site wrapper -->
   <div class="wrapper">
     <!-- Navbar -->

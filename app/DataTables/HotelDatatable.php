@@ -21,16 +21,14 @@ class HotelDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('name', function($data){
-                return "<a href='$data->hotel_url '>$data->name</a>";
+           
+            ->addColumn('action', function ($data) {
+                return view('dashboard.Hotel.action', ['data' => $data]);
             })
-            ->addColumn('action', function($data){
-                return view('dashboard.Hotel.action', ['data'=> $data]);
-                })
-                ->rawColumns([
-                    'name',
-                    'action'
-                ]);
+            ->rawColumns([
+               
+                'action'
+            ]);
     }
 
     /**
@@ -57,16 +55,16 @@ class HotelDatatable extends DataTable
             ->minifiedAjax()
             ->dom('Blfrtip')
             ->orderBy(2);
-            // ->parameters([
-            //     'buttons' => ['create', 'export', 'print', 'reset', 'reload'],
-            // ])
-            // ->buttons(
-            //     Button::make('create'),
-            //     Button::make('export'),
-            //     Button::make('print'),
-            //     Button::make('reset'),
-            //     Button::make('reload')
-            // );
+        // ->parameters([
+        //     'buttons' => ['create', 'export', 'print', 'reset', 'reload'],
+        // ])
+        // ->buttons(
+        //     Button::make('create'),
+        //     Button::make('export'),
+        //     Button::make('print'),
+        //     Button::make('reset'),
+        //     Button::make('reload')
+        // );
     }
 
     /**
@@ -85,7 +83,7 @@ class HotelDatatable extends DataTable
             // Column::make('latitude'),
             // Column::make('longtude'),
             Column::make('address'),
-            Column::make('services'),
+            // Column::make('services'),
             // Column::make('hotel_url'),
             Column::computed('action')
                 ->exportable(false)

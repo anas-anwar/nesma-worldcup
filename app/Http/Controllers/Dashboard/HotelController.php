@@ -8,6 +8,8 @@ use App\Models\Hotel;
 use App\Models\Image;
 use App\Models\Room;
 use App\DataTables\HotelDatatable;
+use App\Models\EntityService;
+use App\Models\Service;
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
@@ -19,7 +21,8 @@ class HotelController extends Controller
      */
     public function index(HotelDatatable $hotels)
     {
-        return $hotels->render('dashboard.Hotel.index', ['title'=> 'Hotels Page']);
+        $rooms = Room::get();
+        return $hotels->render('dashboard.Hotel.index', ['title' => 'Hotels Page', 'rooms' => $rooms]);
     }
 
     /**
@@ -50,22 +53,22 @@ class HotelController extends Controller
             'longtude' => 'required|numeric|min:-180|max:180',
             'address' => 'required|string',
             'hotel_url' => 'required',
-            'services' => 'required'
+            'rate' => 'required|min:0|max:5'
         ]);
 
         $hotel = new Hotel();
         $hotel->name = $request['name'];
         $hotel->description = $request['description'];
         $hotel->phone = $request['phone'];
-        $hotel->rate = 0;
+        $hotel->rate = $request['rate'];
         $hotel->latitude = $request['latitude'];
         $hotel->longtude = $request['longtude'];
         $hotel->address = $request['address'];
         $hotel->hotel_url = $request['hotel_url'];
-        $hotel->services = $request['services'];
+        //$hotel->services = $request['services'];
         $result = $hotel->save();
 
-        return redirect('hotels')->with('add_status', $result);
+        return redirect()->route('hotels.index')->with('add_status', $result);
     }
 
     /**
@@ -76,9 +79,16 @@ class HotelController extends Controller
      */
     public function show($id)
     {
-        $hotel = Hotel::with('images')->with('rooms')->findOrFail($id);
-        // dd($hotel);
-        return view('dashboard.Hotel.show', ['hotel' => $hotel]);
+        $hotel = Hotel::with(['images', 'rooms', 'services.service'])->findOrFail($id);
+        // foreach ($hotel->services as $services) {
+        //     $hotel_services = $services->service->paginate(10);
+        //   // return $hotel->services;
+        // }
+        $hotel_services = $hotel->services()->paginate(10);
+       // return $hotel_services;
+        $images = $hotel->images()->paginate(10);
+        $rooms = $hotel->rooms()->paginate(5);
+        return view('dashboard.Hotel.show', compact('hotel', 'images', 'hotel_services', 'rooms'));
     }
 
     /**
@@ -112,6 +122,7 @@ class HotelController extends Controller
             'address' => 'required|string',
             'hotel_url' => 'required',
             // 'services' => 'required'
+            'rate' => 'required|min:0|max:5'
         ]);
 
         $hotel = Hotel::findOrFail($id);
@@ -119,12 +130,12 @@ class HotelController extends Controller
         $hotel->name = $request['name'];
         $hotel->description = $request['description'];
         $hotel->phone = $request['phone'];
-        $hotel->rate = 0;
+        $hotel->rate = $request['rate'];
         $hotel->latitude = $request['latitude'];
         $hotel->longtude = $request['longtude'];
         $hotel->address = $request['address'];
         $hotel->hotel_url = $request['hotel_url'];
-        $hotel->hotel_url = 'WIFI, Delevary';
+        // $hotel->hotel_url = 'WIFI, Delevary';
         $result = $hotel->save();
 
         return redirect('hotels')->with('add_status', $result);
@@ -140,95 +151,163 @@ class HotelController extends Controller
     {
         Hotel::findOrFail($id)->delete();
         return response()->json([
-            'success'=> true,
+            'success' => true,
         ]);
     }
 
-    public function add_image(Request $request, $id)
+    // ---------------------- Image for Hotel ----------------------
+    public function addImages($id)
     {
+        $hotel = Hotel::findOrFail($id);
+        $images = $hotel->images;
+        return view('dashboard.Hotel.addImage', ['images' => $images, 'hotel' => $hotel]);
+    }
+
+    public function storeImages(Request $request, $id)
+    {
+        // $hotel= Hotel::findOrFail($id);
         $request->validate([
-            'fileName' => 'required',
+            'images' => 'required',
         ]);
 
-        if ($request->hasFile('fileName')) {
-            $image = $request->file('fileName');
-            $path = 'public/HotelsImages/';
-            $name = time() + rand(1, 10000000000) . '.' . $image->getClientOriginalExtension();
-            Storage::disk('local')->put($path . $name, file_get_contents($image));
-            Storage::disk('local')->exists($path . $name);
-        };
-
-        $image = new Image();
-        $image->image_url = "storage/HotelsImages/" . $name;
-        $image->name = $name;
-        $image->model_type = "App\Models\Hotel";
-        $image->model_id = $id;
-        $result = $image->save();
-
-        if ($result) {
-            $status = true;
-            $message = "Images Added to Hotel Successfully";
-            $data = $result;
-        } else {
-            $status = false;
-            $message = "Images didn't Add to Hotel Successfully";
-            $data = $result;
+        $result = null;
+        if ($request->hasFile('images')) {
+            foreach ($request->images as $image) {
+                $path = 'public/HotelsImages/';
+                $name = time() + rand(1, 10000000000) . '.' . $image->getClientOriginalExtension();
+                Storage::disk('local')->put($path . $name, file_get_contents($image));
+                Storage::disk('local')->exists($path . $name);
+                $image = new Image();
+                $image->image_url = "storage/HotelsImages/" . $name;
+                $image->name = $name;
+                $image->model_type = "App\Models\Hotel";
+                $image->model_id = $id;
+                $result = $image->save();
+            }
         }
+        return redirect()->route('hotels.show', $id)->with('status', $result);
+    }
+
+    public function deleteImage($id)
+    {
+        $image = Image::findOrFail($id);
+        Storage::disk('local')->delete('public/HotelsImages/' . $image->name);
+        $image->delete();
+
         return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data
+            "status" => true,
+            "message" => "The image has been deleted"
         ]);
     }
+    // ---------------------- End Image for Hotel ----------------------
+
+    // ---------------------- Room for Hotel ----------------------
 
     public function add_room(Request $request, $id)
     {
+        $hotel = Hotel::with('rooms')->findOrFail($id);
+        return view('dashboard.Hotel.addRoom', compact('hotel'));
+    }
+    public function store_room(Request $request, $id)
+    {
+        $hotel = Hotel::with('rooms')->findOrFail($id);
 
         $request->validate([
-            'type' => 'required|string',
+            'type' => 'required',
             'price' => 'required|numeric|min:1|max:100000',
             'url' => 'required',
         ]);
 
-        // $Rooms = Room::where("hotel_id",$id)->get();
-        // foreach($Rooms as $Room){
-        //     if($Room->type == $request['type']){
-        //         if($Room->hotel_id == $id){
-        //             $result = false;
-        //             $message = 'This room already exists';
-        //         }else{
-        //             $room = new Room();
-        //             $room->type = $request['type'];
-        //             $room->price = $request['price'];
-        //             $room->url = $request['url'];
-        //             $room->hotel_id = $id;
-        //             $result = $room->save();
-        //         }
-        //     }else{
-        //         $result = false;
-        //         $message = "Rooms didn't Add to Hotel Successfully";
-        //     }
-        // }
-        $room = new Room();
+        $request->merge([
+            'hotel_id' => $id
+        ]);
+
+        $result = Room::create($request->all());
+
+        return redirect()->route('hotels.show', $hotel->id)->with('status', $result);
+    }
+
+    public function edit_room(Request $request, $id)
+    {
+        $room = Room::findOrFail($id);
+        return view('dashboard.Hotel.editRoom', compact('room'));
+    }
+
+    public function update_room(Request $request, $id)
+    {
+        $room = Room::with('Hotels')->findOrFail($id);
+
+        $request->validate([
+            'type' => 'required',
+            'price' => 'required|numeric|min:1|max:100000',
+            'url' => 'required',
+        ]);
+
         $room->type = $request['type'];
         $room->price = $request['price'];
         $room->url = $request['url'];
-        $room->hotel_id = $id;
+        // $room->hotel_id = $room->Hotels->id;
         $result = $room->save();
 
-        if ($result) {
-            $status = true;
-            $message = "Rooms Added to Hotel Successfully";
-            $data = $result;
-        } else {
-            $status = false;
-            $message = "Rooms didn't Add to Hotel Successfully";
-            $data = $result;
-        }
+        return redirect()->route('hotels.show', $room->Hotels->id)->with('status', $result);
+    }
+
+    public function delete_room($id)
+    {
+        Room::findOrFail($id)->delete();
+
         return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data
+            'success' => true,
         ]);
     }
+    // ---------------------- Room for Hotel ----------------------
+
+    // ---------------------- Service for Hotel ----------------------
+
+    public function add_service(Request $request, $id)
+    {
+        $hotel = Hotel::findOrFail($id);
+        // foreach ($hotel->services as $services) {
+        //     $hotel_services = $services->service;
+        // }
+        $hotel_services = $hotel->services;
+        $services = Service::all();
+        // return ($services);
+        return view('dashboard.Hotel.addService', compact('hotel', 'hotel_services', 'services'));
+    }
+    public function store_service(Request $request, $id)
+    {
+        $hotel = Hotel::with('services')->findOrFail($id);
+        $hotel_services = $hotel->services;
+        $services = $request->services;
+        // $result = '';
+        foreach ($services as $service) {
+            if ($hotel_services) {
+                foreach ($hotel_services as $hotel_service) {
+                   
+                        $hotel_service->delete();
+
+                  
+                }
+            }
+            $entity_service = new EntityService();
+            $entity_service->service_id = $service;
+            $entity_service->model_type = 'App\Models\Hotel';
+            $entity_service->model_id = $id;
+            $result = $entity_service->save();
+        }
+
+        return redirect()->route('hotels.show', $id)->with('status', $result);
+    }
+
+    public function delete_service($id)
+    {
+        EntityService::findOrFail($id)->Delete();
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+    // ---------------------- Room for Hotel ----------------------
+
 }

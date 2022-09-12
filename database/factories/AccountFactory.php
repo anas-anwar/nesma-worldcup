@@ -16,7 +16,7 @@ class AccountFactory extends Factory
      * @var string
      */
     protected $model = Account::class;
-  
+
     /**
      * Define the model's default state.
      *
@@ -26,7 +26,6 @@ class AccountFactory extends Factory
     {
         return [
             'UDID' => $this->faker->unique()->text(),
-            'type' => $this->faker->text()
 
         ];
     }

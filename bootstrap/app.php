@@ -40,6 +40,11 @@ $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
+// bootstrap/app.php
+
+//$app->register(Kreait\Laravel\Firebase\ServiceProvider::class);
+
+// If you want to use the Facades provided by the package
 
 /*
 |--------------------------------------------------------------------------

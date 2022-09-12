@@ -9,8 +9,8 @@ class Player extends Model
 {
     public $timestamps = false;
     use HasFactory;
-
-    public function Teams(){ // 1 - M relationship (Many)
+    protected $fillable=['name','nationality','birthdate','height','weight','team_id'];
+    public function team(){ // 1 - M relationship (Many)
         return $this->belongsTo(Team::class, 'team_id');
     }
     public function LineUp(){ // 1 - M relationship (One)

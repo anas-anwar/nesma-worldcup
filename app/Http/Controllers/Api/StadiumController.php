@@ -13,7 +13,7 @@ class StadiumController extends Controller
         $stadiums  = Stadium::with('images')->limit($limit)->offset($request['page'] * $limit)->get();
         return response()->json([
             'status' => true,
-            'message' => 'Show Stadiums',
+            'message' => 'Show stadium',
             'data' => $stadiums,
         ]);
     }
