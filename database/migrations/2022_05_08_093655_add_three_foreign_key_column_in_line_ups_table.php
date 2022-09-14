@@ -33,7 +33,7 @@ return new class extends Migration
         Schema::table('line_ups', function (Blueprint $table) {
             $table->dropColumn('match_id');
             $table->dropColumn('team_id');
-            $table->dropColumn('player_id');
+            //$table->dropColumn('player_id');
         });
     }
 };

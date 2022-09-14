@@ -25,7 +25,7 @@ class StadiumFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'description' => $this->faker->text(),
+            'description' => $this->faker->text(20),
             'phone' => $this->faker->phoneNumber(),
             'capacity' => rand(90000, 95000),
             'address' => $this->faker->address(),

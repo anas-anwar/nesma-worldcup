@@ -25,7 +25,7 @@ class AccountFactory extends Factory
     public function definition()
     {
         return [
-            'UDID' => $this->faker->unique()->text(),
+            'UDID' => $this->faker->unique()->text(20),
 
         ];
     }

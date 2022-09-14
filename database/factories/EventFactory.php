@@ -25,10 +25,10 @@ class EventFactory extends Factory
     public function definition()
     {
         return [
-            'time' => $this->faker->time(),
+            //'time' => $this->faker->time(),
             'match_id' => rand(1,10),
             'team_id' => rand(1,10),
-            'player_id' => rand(1,10),
+            'player1_id' => rand(1,10),
             'type_of_events_id' => rand(1,2),
         ];
     }

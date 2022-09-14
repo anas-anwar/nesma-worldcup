@@ -16,12 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //         \App\Models\User::insert(
-        //             'username' => 'admin',
-        // 'email' => 'dev.anas.anwar',
-        // 'password' => ,
-        // 'type' => 
-        //         );
+
+        \App\Models\User::insert([
+            'username' => 'admin',
+            'email' => 'dev.anas.anwar@gmail.com',
+            'password' => Hash::make('123456'),
+            'type' => 1
+        ] );
         \App\Models\Account::factory(10)->create();
         \App\Models\Hotel::factory(10)->create();
         \App\Models\Restaurant::factory(10)->create();

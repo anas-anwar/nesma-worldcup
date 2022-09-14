@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('et_score')->nullable();
             $table->string('ps_score')->nullable();
            
-            $table->unsignedBigInteger('winner_team_id');
+            $table->unsignedBigInteger('winner_team_id')->nullable();
             // $table->foreign('winner_team_id')->references('id')->on('teams')->cascadeOnDelete();     
         });
     }

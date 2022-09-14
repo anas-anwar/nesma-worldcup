@@ -39,7 +39,7 @@ class RestaurantFactory extends Factory
             'latitude' => $this->faker->latitude($min = -90, $max = 90),
             'longtude' => $this->faker->longitude($min = -180, $max = 180),
             'address' => $this->faker->address(),
-            'services' => $services[rand(0,2)],
+            //'services' => $services[rand(0,2)],
         ];
     }
 }

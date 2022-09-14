@@ -29,9 +29,9 @@ class MatchModelFactory extends Factory
         $team_two = $n;
 
         return [
-            'date' => $this->faker->date(),
-            'start' => $starts_at,
-            'end' => $ends_at,
+            'date_time' => $this->faker->date(),
+            //'start' => $starts_at,
+            //'end' => $ends_at,
             'round_id' => rand(1,10),
             'stadium_id' => rand(1,10),
             'localteam_id' => $team_one,

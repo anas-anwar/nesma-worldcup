@@ -28,7 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn(['var_result','minute','extra_minute']);
+            //$table->dropColumn(['var_result','minute','extra_minute']);
         });
     }
 };
