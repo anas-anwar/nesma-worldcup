@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'email' => 'dev.anas.anwar@gmail.com',
             'password' => Hash::make('123456'),
-            'type' => 1
+            'type' => 'admin'
         ] );
         \App\Models\Account::factory(10)->create();
         \App\Models\Hotel::factory(10)->create();
