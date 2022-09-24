@@ -60,14 +60,18 @@ class HomeController extends Controller
     public function create_account(Request $request)
     {
         $udid = $request['udid'];
+        $device_token = $request['device_token'];
         $account = Account::where('UDID', $udid)->first();
         if (empty($account)) {
             $new_account = new Account();
             $new_account->udid = $udid;
+            $new_account->device_token = $device_token;
             $new_account->save();
             $message = 'Added Account Successfully';
             $data = $new_account->id;
         } else {
+            $account->device_token = $device_token;
+            $account->save();
             $message = 'Account exists';
             $data = $account->id;
         }
