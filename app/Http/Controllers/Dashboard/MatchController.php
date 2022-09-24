@@ -12,6 +12,7 @@ use App\Models\Stadium;
 use App\Models\Team;
 use App\Models\TypeOfEvent;
 use App\Models\User;
+use App\Notifications\NewEventNotification;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -84,7 +85,8 @@ class MatchController extends Controller
         $matche->round_id=$request->round_id;
        
         $result=$matche->save();
-    
+        //User::find(1)->notify(new NewEventNotification(new Event()));
+        return;
         return redirect()->route('matches.index')->with(['add_status' => $result]);
     }
 

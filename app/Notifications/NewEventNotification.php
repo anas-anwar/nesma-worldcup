@@ -38,10 +38,15 @@ class NewEventNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
+
+    // Notification Channel: mail, database
     public function via($notifiable)
     {
-       // return ['mail','database'];
-       return[FcmChannel::class];
+       $channels = ['database'];
+    //   if (in_array('mail', $notifiable->notification_options)) {
+    //    $channel[] = 'mail';
+    //   }
+       return $channels;
     }
 
     /**
@@ -53,12 +58,19 @@ class NewEventNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Anew event occur')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('Anew event occur')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
     
-  
+    public function toDatabase($notifiable)
+    {
+        return [
+            'title' => 'New Event',
+            'message' => $this->event->match_id. 'new event occur',
+
+        ];
+    }
   
 
     /**
@@ -77,22 +89,22 @@ class NewEventNotification extends Notification
         ];
     }
 
-    public function toFcm($notifiable)
-    {
-        return FcmMessage::create()
-            ->setData(['event_id' => $this->event->id, 'match_id' => $this->event->match_id])
-            ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
-                ->setTitle('Anew event occur')
-                ->setBody('A'.$this->event->TypeOfEvents->name.'accur in match')
-               )
-            ->setAndroid(
-                AndroidConfig::create()
-                    ->setFcmOptions(AndroidFcmOptions::create()->setAnalyticsLabel('analytics'))
-                    ->setNotification(AndroidNotification::create()->setColor('#0A0A0A'))
-            )->setApns(
-                ApnsConfig::create()
-                    ->setFcmOptions(ApnsFcmOptions::create()->setAnalyticsLabel('analytics_ios')));
-    }
+    //public function toFcm($notifiable)
+    //{
+    //    return FcmMessage::create()
+    //        ->setData(['event_id' => $this->event->id, 'match_id' => $this->event->match_id])
+    //        ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
+    //            ->setTitle('Anew event occur')
+    //            ->setBody('A'.$this->event->TypeOfEvents->name.'accur in match')
+    //           )
+    //        ->setAndroid(
+    //            AndroidConfig::create()
+    //                ->setFcmOptions(AndroidFcmOptions::create()->setAnalyticsLabel('analytics'))
+    //                ->setNotification(AndroidNotification::create()->setColor('#0A0A0A'))
+    //        )->setApns(
+    //            ApnsConfig::create()
+    //                ->setFcmOptions(ApnsFcmOptions::create()->setAnalyticsLabel('analytics_ios')));
+    //}
 
    
 }

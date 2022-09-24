@@ -419,7 +419,16 @@
           </a>
         </li>
         @endif
-
+        @if(Auth::user()->type == 'admin')
+        <li class="nav-item">
+          <a href="{{url('notifications')}}" class="nav-link {{ Route::is('notifications*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-list-ul"></i>
+            <p>
+              Notifications
+            </p>
+          </a>
+        </li>
+        @endif
         <li class="nav-item">
           <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">

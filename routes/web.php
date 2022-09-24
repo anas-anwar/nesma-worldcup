@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\MatchController;
 use App\Http\Controllers\Dashboard\MedicalCenterController;
 use App\Http\Controllers\Dashboard\MetroStationController;
 use App\Http\Controllers\Dashboard\ServiceController;
+use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\StadiumController;
 use App\Http\Controllers\Dashboard\TouristicPlaceController;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         function () {
             //------------------------ Services ------------------------     
             Route::resource('services', ServiceController::class);
-
+            Route::resource('notifications', NotificationController::class);
             //------------------------ Hotel ------------------------     
             Route::resource('hotels', HotelController::class);
             //------------------------ Hotel Rooms ------------------------
