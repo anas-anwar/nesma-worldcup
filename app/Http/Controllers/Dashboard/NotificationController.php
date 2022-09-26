@@ -185,24 +185,37 @@ class NotificationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'type' => 'required|string',
-            'notifiable_type'=>'required|string',
-            'notifiable_id' => 'required',
-            'data' => 'required',
-            'read_at' => 'required',
+
+        try{
+            $request->user()->update(['device_token'=>$request->token]);
+            return response()->json([
+                'success'=>true
+            ]);
+        }catch(\Exception $e){
+            report($e);
+            return response()->json([
+                'success'=>false
+            ],500);
+        }
+
+        //$request->validate([
+        //    'type' => 'required|string',
+        //    'notifiable_type'=>'required|string',
+        //    'notifiable_id' => 'required',
+        //    'data' => 'required',
+        //    'read_at' => 'required',
             
-        ]);
+        //]);
 
-        $notification = Notification::findOrfail($id);
-        $notification->type = $request['type'];
-        $notification->notifiable_type = $request['notifiable_type'];
-        $notification->notifiable_type = $request['notifiable_type'];
-        $notification->data = $request['data'];
-        $notification->read_at = $request['read_at'];
-        $result = $notification->save();
+        //$notification = Notification::findOrfail($id);
+        //$notification->type = $request['type'];
+        //$notification->notifiable_type = $request['notifiable_type'];
+        //$notification->notifiable_type = $request['notifiable_type'];
+        //$notification->data = $request['data'];
+        //$notification->read_at = $request['read_at'];
+        //$result = $notification->save();
 
-        return redirect('notificatios')->with('add_status', $result);
+        //return redirect('notificatios')->with('add_status', $result);
     }
 
     /**
