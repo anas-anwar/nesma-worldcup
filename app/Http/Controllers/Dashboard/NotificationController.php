@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Kutia\Larafirebase\Facades\Larafirebase;
 use Ramsey\Uuid\Uuid;
 
 class NotificationController extends Controller
@@ -49,91 +50,111 @@ class NotificationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'type' => 'required|string',
-            'notifiable_type'=>'required|string',
-            'notifiable_id' => 'required',
-            'data' => 'required',
-            'read_at' => 'required',
-           
+            'title' => 'required|string',
+            'message' => 'required|string'
         ]);
+        try{
+            $fcmTokens = Account::whereNotNull('device_token')->pluck('device_token')->toArray();
+            $predefine = [
+                'd5RF0EotQQib9Sro6qTtF6:APA91bHYc2rnWtoGsWdII5SlFkUB_oZKCXVvaNP9reVSPQGsXO8KGN7GwjFKUduAL8xSOnT-5nUpzCkHFbqA1Lllv4X8OjAdYusqms5Q5U9QF7sBj4MwocPQjcZBkwYYjW1BJ7AY_UH',
+                'eMPnJoKxTN6JvUA4LPRQuH:APA91bHfqKhV0jSr4n5DqpLmjk1dhDVnFae1_ujYxDluSlCOjGDKqTFD39UKO3XmGSRRf6dax1tIOpOP1KvWqytAKZ80D9GRN8DQ2Z9LSyGoXj6XfWWuNZGwKbsDJHUbdjl8GA7sou8Q',
+                'ffmcFCJlQPmEevaIxeFkHn:APA91bHwOLuULhHOCnhIFl9EKpkORSc9QSWdO1_gwD3qsASKKQQzGFVtHE08nSPyw0pKX1-HzEEUJ5oEa-Uuad-5Kbpg09X5hzPuYTSDfQ2R9ZVUuNHmSevclNFOTEyv2facdkDpEo3H'
+            ];
 
-        $result = $this->sendNotification([
-            "title"=> "this is title",
-            "body"=> "this is body"
-        ]);
-        if($result == false){
-            dd("faild");
-            return redirect('dashboard.Notification.create');
+            Larafirebase::withTitle($request->title)
+                ->withBody($request->message)
+                ->sendMessage($predefine);
 
-            //->withErrors("firebase error")
-            //->withInput();
+            return redirect()->back()->with('success','Notification Sent Successfully!!');
+            dd(11);
 
+        }catch(\Exception $e){
+            report($e);
+            dd($e);
+            return redirect()->back()->with('error','Something goes wrong while sending notification.');
         }
-        //$notification = new NotM();
-        
-        //$notification->id = rand(999,9999);
-        //$notification->type = $request['type'];
-        //$notification->notifiable_type = $request['notifiable_type'];
-        //$notification->notifiable_id = $request['notifiable_id'];
-        //$notification->data = $request['data'];
-        ////$notification->read_at = $request['read_at'];
-        
-        //$result = $notification->save();
 
-        return redirect('notifications')->with('add_status', $result);
+        ////$result = $this->sendNotification([
+        ////    "title"=> "this is title",
+        ////    "body"=> "this is body"
+        ////]);
+        ////if($result == false){
+        ////    dd("faild");
+        ////    return redirect('dashboard.Notification.create');
+
+        //    //->withErrors("firebase error")
+        //    //->withInput();
+
+        //}
+        ////$notification = new NotM();
+        
+        ////$notification->id = rand(999,9999);
+        ////$notification->type = $request['type'];
+        ////$notification->notifiable_type = $request['notifiable_type'];
+        ////$notification->notifiable_id = $request['notifiable_id'];
+        ////$notification->data = $request['data'];
+        //////$notification->read_at = $request['read_at'];
+        
+        ////$result = $notification->save();
+
+        ////return redirect('notifications')->with('add_status', $result);
 
     }
-    public function sendNotification($request)
-    {
-        $url = 'https://fcm.googleapis.com/fcm/send';
+    //public function sendNotification($request)
+    //{
+    //    $url = 'https://fcm.googleapis.com/fcm/send';
 
-        $FcmToken = Account::whereNotNull('device_token')->pluck('device_token')->all();
+    //    $FcmToken = Account::whereNotNull('device_token')->pluck('device_token')->all();
 
-        $serverKey = 'AAAARP85D58:APA91bEEiyP8ETTPChQqzg7fNDwihDSO5mt2CTbtOAOGcRuaJfcqA2OXelQYKuiQeHKhHYHnyiGUPtFiI6BRqI6AvmUK6A8jwo7YeeKX0U4Mvo5GIdziy84GMUer-pU4dPWe01JemMeT'; 
-        if(sizeof($FcmToken) == 0){
-            return false;
-        }
-        print_r($FcmToken);
-        $data = [
-            "registration_ids" => $FcmToken,
-            "notification" => [
-                "title" => $request['title'],
-                "body" => $request['body'],  
-            ]
-        ];
-        $encodedData = json_encode($data);
+    //    $serverKey = 'AAAARP85D58:APA91bEEiyP8ETTPChQqzg7fNDwihDSO5mt2CTbtOAOGcRuaJfcqA2OXelQYKuiQeHKhHYHnyiGUPtFiI6BRqI6AvmUK6A8jwo7YeeKX0U4Mvo5GIdziy84GMUer-pU4dPWe01JemMeT'; 
+    //    if(sizeof($FcmToken) == 0){
+    //        return false;
+    //    }
+    //    $predefine = [
+    //        'd5RF0EotQQib9Sro6qTtF6:APA91bHYc2rnWtoGsWdII5SlFkUB_oZKCXVvaNP9reVSPQGsXO8KGN7GwjFKUduAL8xSOnT-5nUpzCkHFbqA1Lllv4X8OjAdYusqms5Q5U9QF7sBj4MwocPQjcZBkwYYjW1BJ7AY_UH',
+    //        'eMPnJoKxTN6JvUA4LPRQuH:APA91bHfqKhV0jSr4n5DqpLmjk1dhDVnFae1_ujYxDluSlCOjGDKqTFD39UKO3XmGSRRf6dax1tIOpOP1KvWqytAKZ80D9GRN8DQ2Z9LSyGoXj6XfWWuNZGwKbsDJHUbdjl8GA7sou8Q',
+    //        'ffmcFCJlQPmEevaIxeFkHn:APA91bHwOLuULhHOCnhIFl9EKpkORSc9QSWdO1_gwD3qsASKKQQzGFVtHE08nSPyw0pKX1-HzEEUJ5oEa-Uuad-5Kbpg09X5hzPuYTSDfQ2R9ZVUuNHmSevclNFOTEyv2facdkDpEo3H'
+    //    ];
+    //    print_r($predefine);
+    //    $data = [
+    //        "registration_ids" => $predefine,
+    //        "notification" => [
+    //            "title" => $request['title'],
+    //            "body" => $request['body'],  
+    //        ]
+    //    ];
+    //    $encodedData = json_encode($data);
     
-        $headers = [
-            'Authorization:key=' . $serverKey,
-            'Content-Type: application/json',
-        ];
+    //    $headers = [
+    //        'Authorization:key=' . $serverKey,
+    //        'Content-Type: application/json',
+    //    ];
     
-        $ch = curl_init();
+    //    $ch = curl_init();
         
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        // Disabling SSL Certificate support temporarly
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
-        // Execute post
-        $result = curl_exec($ch);
-        if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
-        }        
-        $result_1 = json_decode($result);
-        if($result_1 &&  $result_1->failure){
-            return false;
-        }
-        // Close connection
-        curl_close($ch);
-        // FCM response
-        //dd($result);
-        return $result;
-    }
+    //    curl_setopt($ch, CURLOPT_URL, $url);
+    //    curl_setopt($ch, CURLOPT_POST, true);
+    //    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    //    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    //    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    //    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+    //    // Disabling SSL Certificate support temporarly
+    //    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    //    curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+    //    // Execute post
+    //    $result = curl_exec($ch);
+    //    if ($result === FALSE) {
+    //        die('Curl failed: ' . curl_error($ch));
+    //    }        
+    //    $result_1 = json_decode($result);
+    //    if($result_1 &&  $result_1->failure){
+    //        return false;
+    //    }
+    //    curl_close($ch);
+    //    // FCM response
+    //    //dd($result);
+    //    return $result;
+    //}
      
     /**
      * Display the specified resource.

@@ -91,7 +91,7 @@ class NewEventNotification extends Notification
 
     //public function toFcm($notifiable)
     //{
-    //    return FcmMessage::create()
+        //return FcmMessage::create()
     //        ->setData(['event_id' => $this->event->id, 'match_id' => $this->event->match_id])
     //        ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
     //            ->setTitle('Anew event occur')

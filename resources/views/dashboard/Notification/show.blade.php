@@ -39,16 +39,16 @@
             <div class="bg-light">
                 <div class="card-body m-3">
                     <div class="form-group">
-                        <label for="exampleInputType">Type</label>
-                        <input type="text" class="form-control" id="exampleInputType" value="{{ $notification->type }}" placeholder="Enter Notification Type" disabled>
+                        <label for="exampleInputTitle">Title</label>
+                        <input type="text" class="form-control" id="exampleInputTitle" value="{{ $notification->title }}" placeholder="Enter Notification Title" disabled>
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputNotifiableType">Notifiable Type</label>
-                        <input type="text" class="form-control" id="exampleInputNotifiableType" name="notifiable_type" placeholder="Enter Notification Notifiable Type" value="{{old('notifiable_type')}}" required autofocus>
+                        <label for="exampleInputNotifiableMessage">Message</label>
+                        <input type="text" class="form-control" id="exampleInputNotifiableMessage" name="message" placeholder="Enter Notification Message" value="{{old('message')}}" required autofocus>
                     </div>
 
-                    <div class="form-group">
+                    {{--<div class="form-group">
                         <label for="exampleInputNotifiableId">Notifiable Id</label>
                         <input type="text" class="form-control" id="exampleInputNotifiableId" name="notifiable_id" placeholder="Enter Notification Notifiable Id" value="{{old('notifiable_id')}}" required autofocus>
                     </div>
@@ -61,7 +61,7 @@
                     <div class="form-group">
                         <label for="exampleInputReadAt">Read At</label>
                         <input type="text" class="form-control" id="exampleInputReadAt" value="{{ $notification->read_at }}" placeholder="Enter Notification Read At" disabled>
-                    </div>
+                    </div>--}}
 
                 </div>
             </div>

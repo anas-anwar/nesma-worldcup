@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\DataTables\MatchDatatable;
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Event;
 use App\Models\MatchModel;
 use App\Models\Player;
@@ -85,7 +86,7 @@ class MatchController extends Controller
         $matche->round_id=$request->round_id;
        
         $result=$matche->save();
-        //User::find(1)->notify(new NewEventNotification(new Event()));
+        //Account::find(1)->notify(new NewEventNotification(new Event()));
         return;
         return redirect()->route('matches.index')->with(['add_status' => $result]);
     }

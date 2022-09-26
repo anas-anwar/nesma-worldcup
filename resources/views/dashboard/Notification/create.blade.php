@@ -41,15 +41,15 @@
           <form method="POST" action="{{ URL('notifications') }}">
             @csrf
             <div class="form-group">
-              <label for="exampleInputType">Type</label>
-              <input type="text" class="form-control" id="exampleInputType" name="type" placeholder="Enter Notification Type" value="{{old('type')}}" required autofocus>
+              <label for="exampleInputType">Title</label>
+              <input type="text" class="form-control" id="exampleInputTitle" name="title" placeholder="Enter Notification Title" value="{{old('title')}}" required autofocus>
             </div>
             <div class="form-group">
-              <label for="exampleInputNotifiableType">Notifiable Type</label>
-              <input type="text" class="form-control" id="exampleInputNotifiableType" name="notifiable_type" placeholder="Enter Notification Notifiable Type" value="{{old('notifiable_type')}}" required autofocus>
+              <label for="exampleInputNotifiableType">Message</label>
+              <input type="text" class="form-control" id="exampleInputMessagee" name="message" placeholder="Enter Notification Message" value="{{old('message')}}" required autofocus>
             </div>
             <div class="form-group">
-              <label for="exampleInputNotifiableId">Notifiable Id</label>
+              {{--<label for="exampleInputNotifiableId">Notifiable Id</label>
               <input type="text" class="form-control" id="exampleInputNotifiableId" name="notifiable_id" placeholder="Enter Notification Notifiable Id" value="{{old('notifiable_id')}}" required autofocus>
             </div>
             <div class="form-group">
@@ -58,7 +58,7 @@
             </div>
             <div class="form-group">
               <label for="exampleInputReadAt">Read At</label>
-              <input type="text" class="form-control" id="exampleInputReadAt" name="read_at" placeholder="Enter Notification reat at" value="{{old('read_at')}}" required autofocus>
+              <input type="text" class="form-control" id="exampleInputReadAt" name="read_at" placeholder="Enter Notification reat at" value="{{old('read_at')}}" required autofocus>--}}
             </div>
             <button type="submit" class="btn btn-primary">Add New</button>
           </form>
